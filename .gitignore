@@ -1,0 +1,7 @@
+# Ignore Terraform state files
+/terraform.tfstate*
+
+# Ignore Terraform state files
+/.terraform/
+
+/*.plan
