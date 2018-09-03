@@ -1,7 +1,8 @@
 resource "aws_volume_attachment" "ebs_att" {
-  device_name = "/dev/sdh"
-  volume_id   = "${aws_ebs_volume.pegavol.id}"
-  instance_id = "${aws_instance.pegaweb.id}"
+  device_name  = "/dev/sdh"
+  volume_id    = "${aws_ebs_volume.pegavol.id}"
+  instance_id  = "${aws_instance.pegaweb.id}"
+  force_detach = true
 }
 
 resource "aws_instance" "pegaweb" {
@@ -44,4 +45,3 @@ resource "null_resource" "provision" {
 output "address" {
   value = "${aws_instance.pegaweb.public_dns}"
 }
-
