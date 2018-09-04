@@ -6,8 +6,8 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "aws_instance" "pegaweb" {
-  ami                         = "ami-28e07e50"
-  availability_zone           = "us-west-2a"
+  ami                         = "ami-c86c3f23"
+  availability_zone           = "eu-central-1a"
   instance_type               = "t2.xlarge"
   associate_public_ip_address = "true"
   key_name                    = "${var.key_name}"
@@ -20,7 +20,7 @@ resource "aws_instance" "pegaweb" {
 }
 
 resource "aws_ebs_volume" "pegavol" {
-  availability_zone = "us-west-2a"
+  availability_zone = "eu-central-1a"
   size              = 50
 }
 
