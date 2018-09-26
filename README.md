@@ -11,3 +11,14 @@
 > Post provisioning **Automatic** `curl http://169.254.169.254/latest/user-data|sudo sh` - via terraform `remote-exec` executes `prep-rhel75.txt` `shell-script` file contents of this repo available as user-data, post provisioning. Various type besides `shell-script` including direct `cloud-init` commands may be passed as multipart as part of the user-data via terraform `remote-exec`.
 6. To destroy `terraform destroy`
 
+### Terraform Graph
+Please generate dot format (Graphviz) terraform configuration graphs for visual representation of the repo.
+
+`terraform graph | dot -Tsvg > graph.svg`
+s
+Also, one can use [Blast Radius](https://github.com/28mm/blast-radius) on live initialized terraform project to view graph.
+Please shoot in dockerized format:
+
+`docker ps -a|grep blast-radius|awk '{print $1}'|xargs docker kill && rm -rf aws-terraform && git clone https://github.com/dwaiba/aws-terraform && cd aws-terraform && terraform init && docker run --cap-add=SYS_ADMIN -dit --rm -p 5002:5000 -v $(pwd):/workdir:ro 28mm/blast-radius && cd ../`
+
+ A live example is [here](http://buildservers.westeurope.cloudapp.azure.com:5002/) for this project. 
