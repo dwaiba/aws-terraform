@@ -15,7 +15,7 @@
 Please generate dot format (Graphviz) terraform configuration graphs for visual representation of the repo.
 
 `terraform graph | dot -Tsvg > graph.svg`
-s
+
 Also, one can use [Blast Radius](https://github.com/28mm/blast-radius) on live initialized terraform project to view graph.
 Please shoot in dockerized format:
 
