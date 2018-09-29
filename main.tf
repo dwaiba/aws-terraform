@@ -1,11 +1,11 @@
 resource "aws_volume_attachment" "ebs_att" {
   device_name  = "/dev/sdh"
-  volume_id    = "${aws_ebs_volume.pegavol.id}"
-  instance_id  = "${aws_instance.pegaweb.id}"
+  volume_id    = "${aws_ebs_volume.awsvol.id}"
+  instance_id  = "${aws_instance.awsweb.id}"
   force_detach = true
 }
 
-resource "aws_instance" "pegaweb" {
+resource "aws_instance" "awsweb" {
   ami                         = "ami-c86c3f23"
   availability_zone           = "eu-central-1a"
   instance_type               = "t2.xlarge"
@@ -13,13 +13,13 @@ resource "aws_instance" "pegaweb" {
   key_name                    = "${var.key_name}"
 
   tags {
-    Name = "pega"
+    Name = "awsweb"
   }
 
   user_data = "${file("prep-rhel75.txt")}"
 }
 
-resource "aws_ebs_volume" "pegavol" {
+resource "aws_ebs_volume" "awsvol" {
   availability_zone = "eu-central-1a"
   size              = 50
 }
@@ -28,7 +28,7 @@ resource "null_resource" "provision" {
   provisioner "remote-exec" {
     connection {
       user = "ec2-user"
-      host = "${aws_instance.pegaweb.public_dns}"
+      host = "${aws_instance.awsweb.public_dns}"
 
       # The connection will use the local SSH agent for authentication.
       private_key = "${file(var.private_key_path)}"
@@ -39,9 +39,9 @@ resource "null_resource" "provision" {
     ]
   }
 
-  depends_on = ["aws_instance.pegaweb", "aws_ebs_volume.pegavol", "aws_volume_attachment.ebs_att"]
+  depends_on = ["aws_instance.awsweb", "aws_ebs_volume.awsvol", "aws_volume_attachment.ebs_att"]
 }
 
 output "address" {
-  value = "${aws_instance.pegaweb.public_dns}"
+  value = "${aws_instance.awsweb.public_dns}"
 }
