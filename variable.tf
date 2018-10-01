@@ -12,6 +12,6 @@ variable "amis" {
   type = "map"
 
   default = {
-    "eu-central-1a" = "ami-c86c3f23"
+    "eu-central-1" = "ami-c86c3f23"
   }
 }
