@@ -6,12 +6,9 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "aws_instance" "awsweb" {
-  ami = "${lookup(var.rhelamis, var.region)}"
-
-  /**
-                  availability_zone = "${var.region}b"
-                **/
-  instance_type = "t2.xlarge"
+  ami               = "${lookup(var.rhelamis, var.region)}"
+  availability_zone = "${var.region}a"
+  instance_type     = "t2.xlarge"
 
   associate_public_ip_address = "true"
   key_name                    = "${var.key_name}"
