@@ -7,7 +7,8 @@ resource "aws_volume_attachment" "ebs_att" {
 
 resource "aws_instance" "awsweb" {
   ami               = "${lookup(var.rhelamis, var.region)}"
-  availability_zone = "${var.region}a"
+  data              "aws_availability_zones""available"       {}
+  availability_zone = "${data.aws_availability_zones.available}"
   instance_type     = "t2.xlarge"
 
   associate_public_ip_address = "true"
