@@ -22,7 +22,7 @@ resource "aws_instance" "awsweb" {
 }
 
 resource "aws_ebs_volume" "awsvol" {
-  availability_zone = "eu-central-1a"
+  availability_zone = "${var.region}a"
   size              = 50
 }
 
@@ -50,6 +50,10 @@ output "ami" {
 
 output "region" {
   value = "${aws_instance.awsweb.availability_zone}"
+}
+
+output "volumeid" {
+  value = "${aws_ebs_volume.awsvol.id}"
 }
 
 output "address" {
