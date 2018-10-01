@@ -8,11 +8,26 @@ variable "private_key_path" {
 
 variable "region" {}
 
-variable "amis" {
+variable "rhelcreate" {
+  description = "Create RHEL 7.5 if set to True"
+}
+
+variable "centoscreate" {
+  description = "Create CentOS 7.5 if set to True"
+}
+
+variable "rhelamis" {
   type = "map"
 
   default = {
     "eu-central-1" = "ami-c86c3f23"
-    "us-west-1"    = "ami-c86c3f23"
+  }
+}
+
+variable "centosamis" {
+  type = "map"
+
+  default = {
+    "eu-central-1" = "ami-337be65c"
   }
 }
