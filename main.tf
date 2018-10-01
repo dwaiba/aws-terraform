@@ -5,14 +5,6 @@ resource "aws_volume_attachment" "ebs_att" {
   force_detach = true
 }
 
-resource "create_rhel" "if-rhel" {
-  count = "${var.rhelcreate == true ? 1 : 0}"
-}
-
-resource "create_centos" "if-centos" {
-  count = "${var.centoscreate == true ? 1 : 0}"
-}
-
 resource "aws_instance" "awsweb" {
   ami = "${lookup(var.rhelamis, var.region)}"
 
@@ -21,24 +13,6 @@ resource "aws_instance" "awsweb" {
 
   associate_public_ip_address = "true"
   key_name                    = "${var.key_name}"
-  rhelcreate                  = true
-
-  tags {
-    Name = "awsweb"
-  }
-
-  user_data = "${file("prep-rhel75.txt")}"
-}
-
-resource "aws_instance" "awsweb" {
-  ami = "${lookup(var.centosamis, var.region)}"
-
-  availability_zone = "${var.region}a"
-  instance_type     = "t2.xlarge"
-
-  associate_public_ip_address = "true"
-  key_name                    = "${var.key_name}"
-  centoscreate                = true
 
   tags {
     Name = "awsweb"
