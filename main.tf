@@ -9,8 +9,8 @@ resource "aws_instance" "awsweb" {
   ami = "${lookup(var.rhelamis, var.region)}"
 
   /**
-            availability_zone = "${var.region}b"
-          **/
+              availability_zone = "${var.region}b"
+            **/
   instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
@@ -26,7 +26,7 @@ resource "aws_instance" "awsweb" {
 resource "aws_ebs_volume" "awsvol" {
   availability_zone = "${aws_instance.awsweb.availability_zone}"
   size              = 50
-  depends_on        = ["aws_instance.awsweb.availability_zone"]
+  depends_on        = ["aws_instance.awsweb"]
 }
 
 resource "null_resource" "provision" {
