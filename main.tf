@@ -13,6 +13,7 @@ data "aws_availability_zones" "available" {}
 
 resource "aws_instance" "awsweb" {
   ami                = "${lookup(var.rhelamis, var.region)}"
+  data               "aws_region"       "current"          {}
   availability_zones = ["${slice(data.aws_availability_zones.available.names, 0, var.max_availability_zones)}"]
   instance_type      = "t2.xlarge"
 
