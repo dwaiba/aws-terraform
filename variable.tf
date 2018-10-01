@@ -13,6 +13,6 @@ variable "amis" {
 
   default = {
     "eu-central-1" = "ami-c86c3f23"
-    "us-east-1"    = "ami-c86c3f23"
+    "us-west-1"    = "ami-c86c3f23"
   }
 }
