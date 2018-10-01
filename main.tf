@@ -5,16 +5,13 @@ resource "aws_volume_attachment" "ebs_att" {
   force_detach = true
 }
 
-variable "max_availability_zones" {
-  default = "1"
-}
-
-data "aws_availability_zones" "available" {}
-
 resource "aws_instance" "awsweb" {
-  ami               = "${lookup(var.rhelamis, var.region)}"
-  availability_zone = ["${slice(data.aws_availability_zones.available.names, 0, var.max_availability_zones)}"]
-  instance_type     = "t2.xlarge"
+  ami = "${lookup(var.rhelamis, var.region)}"
+
+  /**
+    availability_zone = "${var.region}a"
+    **/
+  instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
   key_name                    = "${var.key_name}"
