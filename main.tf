@@ -9,7 +9,7 @@ data "aws_availability_zones" "available" {}
 
 resource "aws_instance" "awsweb" {
   ami               = "${lookup(var.rhelamis, var.region)}"
-  availability_zone = "${data.aws_availability_zones.available}"
+  availability_zone = "${data.aws_availability_zones.available.names[0]}"
   instance_type     = "t2.xlarge"
 
   associate_public_ip_address = "true"
