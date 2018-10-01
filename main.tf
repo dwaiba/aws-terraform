@@ -5,18 +5,14 @@ resource "aws_volume_attachment" "ebs_att" {
   force_detach = true
 }
 
-variable "amis" {
-  type = "map"
-
-  default = {
-    "eu-central-1a" = "ami-c86c3f23"
-  }
-}
-
 resource "aws_instance" "awsweb" {
-  ami                         = "${lookup(var.amis, var.region)}"
-  availability_zone           = "eu-central-1a"
-  instance_type               = "t2.xlarge"
+  ami = "${lookup(var.amis, var.region)}"
+
+  /**
+    availability_zone           = "eu-central-1a"
+    **/
+  instance_type = "t2.xlarge"
+
   associate_public_ip_address = "true"
   key_name                    = "${var.key_name}"
 
@@ -48,6 +44,14 @@ resource "null_resource" "provision" {
   }
 
   depends_on = ["aws_instance.awsweb", "aws_ebs_volume.awsvol", "aws_volume_attachment.ebs_att"]
+}
+
+output "ami" {
+  value = "${lookup(var.amis, var.region)}"
+}
+
+output "region" {
+  value = "${aws_instance.awsweb.availability_zone}"
 }
 
 output "address" {
