@@ -5,9 +5,10 @@ resource "aws_volume_attachment" "ebs_att" {
   force_detach = true
 }
 
+data "aws_availability_zones" "available" {}
+
 resource "aws_instance" "awsweb" {
   ami               = "${lookup(var.rhelamis, var.region)}"
-  data              "aws_availability_zones""available"       {}
   availability_zone = "${data.aws_availability_zones.available}"
   instance_type     = "t2.xlarge"
 
