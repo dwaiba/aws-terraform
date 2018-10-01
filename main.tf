@@ -5,8 +5,16 @@ resource "aws_volume_attachment" "ebs_att" {
   force_detach = true
 }
 
+variable "amis" {
+  type = "map"
+
+  default = {
+    "eu-central-1a" = "ami-c86c3f23"
+  }
+}
+
 resource "aws_instance" "awsweb" {
-  ami                         = "ami-c86c3f23"
+  ami                         = "${lookup(var.amis, var.region)}"
   availability_zone           = "eu-central-1a"
   instance_type               = "t2.xlarge"
   associate_public_ip_address = "true"
