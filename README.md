@@ -1,7 +1,7 @@
 # AWS user-data with Terraform
 
 1. [Download and Install Terraform](https://www.terraform.io/downloads.html)
-2. [Upload your public ssh key via EC2 console for your account and region (eu-central-1 default)](https://us-west-.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`.
+2. [Upload your public ssh key via EC2 console for your account and region (eu-central-1 default)](https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`.
 3. please export the following - 
 `export AWS_ACCESS_KEY_ID="<<your access key>>" && export AWS_SECRET_ACCESS_KEY="<<your secret access key>>" && export AWS_DEFAULT_REGION="eu-central-1"`. 
 
