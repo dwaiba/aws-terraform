@@ -1,4 +1,4 @@
-# AWS user-data with Terraform
+# AWS user-data with Terraform - CentOS 7.5 in all regions with disk.
 
 1. [Download and Install Terraform](https://www.terraform.io/downloads.html)
 2. [Upload your public ssh key via EC2 console for your account and region (eu-central-1 default)](https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`. **Please keep you private pem file handy and note the path.**

@@ -9,8 +9,8 @@ resource "aws_instance" "awsweb" {
   ami = "${lookup(var.centosamis, var.region)}"
 
   /**
-                  availability_zone = "${var.region}a"
-                  **/
+                          availability_zone = "${var.region}a"
+                          **/
   instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
@@ -51,7 +51,7 @@ output "ami" {
   value = "${aws_instance.awsweb.id}"
 }
 
-output "region" {
+output "zone" {
   value = "${aws_instance.awsweb.availability_zone}"
 }
 
@@ -59,6 +59,14 @@ output "volumeid" {
   value = "${aws_ebs_volume.awsvol.id}"
 }
 
+output "volumearn" {
+  value = "${aws_ebs_volume.awsvol.arn}"
+}
+
 output "address" {
   value = "${aws_instance.awsweb.public_dns}"
+}
+
+output "connect" {
+  value = "ssh -i ${file(var.private_key_path)} centos@${aws_instance.awsweb.public_dns}"
 }
