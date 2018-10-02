@@ -6,11 +6,11 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "aws_instance" "awsweb" {
-  ami = "${lookup(var.rhelamis, var.region)}"
+  ami = "${lookup(var.centosamis, var.region)}"
 
   /**
-    availability_zone = "${var.region}a"
-    **/
+        availability_zone = "${var.region}a"
+        **/
   instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
@@ -20,7 +20,7 @@ resource "aws_instance" "awsweb" {
     Name = "awsweb"
   }
 
-  user_data = "${file("prep-rhel75.txt")}"
+  user_data = "${file("prep-centos7.txt")}"
 }
 
 resource "aws_ebs_volume" "awsvol" {
