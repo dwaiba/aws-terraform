@@ -9,8 +9,10 @@
 
 4. Please add ingress allowance rule for port 22 over TCP in the default region VPC for `remote-exe` via ssh agent run in the project to target server - from the ec2 console for the region - eu-central-1
 5. `git clone https://github.com/dwaiba/aws-terraform && cd aws-terraform && terraform init && terraform plan -var region=eu-central-1a -out "run.plan" && terraform apply "run.plan" -var region=eu-central-1a`.
-> Post provisioning **Automatic** `curl http://169.254.169.254/latest/user-data|sudo sh` - via terraform `remote-exec` executes `prep-rhel75.txt` `shell-script` file contents of this repo available as user-data, post provisioning. Various type besides `shell-script` including direct `cloud-init` commands may be passed as multipart as part of the user-data via terraform `remote-exec`.
+> Post provisioning **Automatic** `curl http://169.254.169.254/latest/user-data|sudo sh` - via terraform `remote-exec` executes `prep-centos7.txt` `shell-script` file contents of this repo available as user-data, post provisioning. Various type besides `shell-script` including direct `cloud-init` commands may be passed as multipart as part of the user-data via terraform `remote-exec`.
 6. To destroy `terraform destroy`
+
+> AWS AMIs per regions used in map is as per maintained [CentOS Wiki](https://wiki.centos.org/Cloud/AWS#head-78d1e3a4e6ba5c5a3847750d88266916ffe69648)
 
 ### Login
 

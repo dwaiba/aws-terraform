@@ -9,8 +9,8 @@ resource "aws_instance" "awsweb" {
   ami = "${lookup(var.centosamis, var.region)}"
 
   /**
-                availability_zone = "${var.region}a"
-                **/
+                  availability_zone = "${var.region}a"
+                  **/
   instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
@@ -32,7 +32,7 @@ resource "aws_ebs_volume" "awsvol" {
 resource "null_resource" "provision" {
   provisioner "remote-exec" {
     connection {
-      user        = "ec2-user"
+      user        = "centos"
       private_key = "${file(var.private_key_path)}"
       host        = "${aws_instance.awsweb.public_dns}"
       agent       = false
