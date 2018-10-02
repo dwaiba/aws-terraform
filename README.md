@@ -16,7 +16,7 @@
 
 ### Login
 
-`chmod 400 <<your private pem file>>.pem && ssh -i <<your private pem file>>.pem ec2-user@<<public address>>`
+`chmod 400 <<your private pem file>>.pem && ssh -i <<your private pem file>>.pem centos@<<public address>>`
 
 
 ### Terraform Graph
