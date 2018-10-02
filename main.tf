@@ -9,8 +9,8 @@ resource "aws_instance" "awsweb" {
   ami = "${lookup(var.centosamis, var.region)}"
 
   /**
-                          availability_zone = "${var.region}a"
-                          **/
+                            availability_zone = "${var.region}a"
+                            **/
   instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
@@ -68,5 +68,5 @@ output "address" {
 }
 
 output "connect" {
-  value = "ssh -i ${file(var.private_key_path)} centos@${aws_instance.awsweb.public_dns}"
+  value = "ssh -i ${var.private_key_path} centos@${aws_instance.awsweb.public_dns}"
 }
