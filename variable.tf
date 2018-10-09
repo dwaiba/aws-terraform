@@ -1,5 +1,5 @@
 variable "key_name" {
-  description = "Please input the public key name for which you have private pem file visible via ec2 console - e.g for eu-central-1: https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName "
+  description = "Hopefully as per README.md pre-req: The three values are set from shell- AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION. Please input the public key name visible via ec2 console (for which you have the private pem file locally) - e.g for eu-central-1: https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName "
 }
 
 variable "private_key_path" {
