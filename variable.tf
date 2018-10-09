@@ -1,12 +1,14 @@
 variable "key_name" {
-  description = "Please input the public key name for e.g. in eu-central-1 region already present in your account and visible via ec2 console - e.g: https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName "
+  description = "Please input the public key name for which you have private pem file visible via ec2 console - e.g for eu-central-1: https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName "
 }
 
 variable "private_key_path" {
-  description = "Path to the private key - for ssh login. Example: ~/.ssh/terraform.pem for post provision remote-exec"
+  description = "Local Path to the private key pem file - for ssh login. Example: ~/.ssh/terraform.pem for post provision remote-exec. Port 22 needs to be opened befor provisioning for ingress"
 }
 
-variable "region" {}
+variable "region" {
+  description = "Regions may be ap-northeast-1, ap-northeast-2, ap-south-1, ap-southeast-1, ap-southeast-2, ca-central-1, eu-central-1, eu-west-1, eu-west-2, eu-west-3, sa-east-1, us-east-1,us-east-2, us-west-1, us-west-2"
+}
 
 variable "centosamis" {
   type = "map"
