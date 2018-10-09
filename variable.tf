@@ -3,7 +3,7 @@ variable "key_name" {
 }
 
 variable "private_key_path" {
-  description = "Local Path to the private key pem file - for ssh login. Example: ~/.ssh/terraform.pem for post provision remote-exec. Port 22 needs to be opened befor provisioning for ingress"
+  description = "Local Path to the private key pem file - for ssh login. Example: ~/.ssh/terraform.pem for post provision remote-exec. Port 22 needs to be opened before provisioning for ingress"
 }
 
 variable "region" {
