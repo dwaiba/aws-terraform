@@ -1,3 +1,8 @@
+variable "vm_user" {
+  description = "user for RHEL 75 or CentOS 75"
+  default     = "${var.distro == "rhel75" ? var.rheluser : var.centosuser}"
+}
+
 resource "aws_volume_attachment" "ebs_att" {
   device_name  = "/dev/sdh"
   volume_id    = "${aws_ebs_volume.awsvol.id}"
@@ -7,12 +12,13 @@ resource "aws_volume_attachment" "ebs_att" {
 
 resource "aws_instance" "awsweb" {
   /**
-  ami = "${lookup(var.centosamis, var.region)}"
+    ami = "${lookup(var.centosamis, var.region)}"
 
 
-                            availability_zone = "${var.region}a"
-                            **/
+                              availability_zone = "${var.region}a"
+                              **/
   ami = "${var.distro == "rhel75" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
+
   instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
@@ -34,7 +40,7 @@ resource "aws_ebs_volume" "awsvol" {
 resource "null_resource" "provision" {
   provisioner "remote-exec" {
     connection {
-      user        = "${var.distro == "rhel75" ? var.rheluser : var.centosuser}"
+      user        = "${var.vm_user}"
       private_key = "${file(var.private_key_path)}"
       host        = "${aws_instance.awsweb.public_dns}"
       agent       = false
@@ -70,5 +76,5 @@ output "address" {
 }
 
 output "connect" {
-  value = "ssh -i ${var.private_key_path} ec2-user/centos@${aws_instance.awsweb.public_dns}"
+  value = "ssh -i ${var.private_key_path} ${var.vm_user}@${aws_instance.awsweb.public_dns}"
 }
