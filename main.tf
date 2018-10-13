@@ -71,5 +71,5 @@ output "address" {
 }
 
 output "connect" {
-  value = "ssh -i ${var.private_key_path} ${null_resource.provision.remote-exec.connection.user}@${aws_instance.awsweb.public_dns}"
+  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@${aws_instance.awsweb.public_dns}"
 }
