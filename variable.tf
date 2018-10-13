@@ -12,7 +12,9 @@ variable "region" {
 variable "distro" {
   description = "Please input: rhel75 or centos7"
 }
-
+variable "disk_sizegb"{
+  description = "Please input the disk size in GB. This would be automatically available as fs ext4 mounted on /data with docker CE volumes linked to /data/docker. "
+}
 variable "rheluser"{
   default = "ec2-user"
 }

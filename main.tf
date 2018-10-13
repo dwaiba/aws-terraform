@@ -27,7 +27,7 @@ resource "aws_instance" "awsweb" {
 
 resource "aws_ebs_volume" "awsvol" {
   availability_zone = "${aws_instance.awsweb.availability_zone}"
-  size              = 50
+  size              = "${var.disk_sizegb}"
   depends_on        = ["aws_instance.awsweb"]
 }
 
