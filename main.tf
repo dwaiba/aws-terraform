@@ -6,11 +6,13 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "aws_instance" "awsweb" {
+  /**
   ami = "${lookup(var.centosamis, var.region)}"
 
-  /**
+
                             availability_zone = "${var.region}a"
                             **/
+  ami = "${var.distro == "rhel75" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
   instance_type = "t2.xlarge"
 
   associate_public_ip_address = "true"
@@ -20,7 +22,7 @@ resource "aws_instance" "awsweb" {
     Name = "awsweb"
   }
 
-  user_data = "${file("prep-centos7.txt")}"
+  user_data = "${var.distro == "rhel75" ? file("prep-rhel75.txt") : file("prep-centos7.txt")}"
 }
 
 resource "aws_ebs_volume" "awsvol" {
@@ -32,7 +34,7 @@ resource "aws_ebs_volume" "awsvol" {
 resource "null_resource" "provision" {
   provisioner "remote-exec" {
     connection {
-      user        = "centos"
+      user        = "${var.distro == "rhel75" ? ec2-user : centos}"
       private_key = "${file(var.private_key_path)}"
       host        = "${aws_instance.awsweb.public_dns}"
       agent       = false
@@ -68,5 +70,5 @@ output "address" {
 }
 
 output "connect" {
-  value = "ssh -i ${var.private_key_path} centos@${aws_instance.awsweb.public_dns}"
+  value = "ssh -i ${var.private_key_path} ec2-user/centos@${aws_instance.awsweb.public_dns}"
 }

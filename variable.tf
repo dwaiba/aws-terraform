@@ -9,6 +9,9 @@ variable "private_key_path" {
 variable "region" {
   description = "Regions may be ap-northeast-1, ap-northeast-2, ap-south-1, ap-southeast-1, ap-southeast-2, ca-central-1, eu-central-1, eu-west-1, eu-west-2, eu-west-3, sa-east-1, us-east-1,us-east-2, us-west-1, us-west-2"
 }
+variable "distro" {
+  description = "Please input: rhel75 or centos7"
+}
 
 variable "centosamis" {
   type = "map"
@@ -29,5 +32,26 @@ variable "centosamis" {
     "us-east-2"      = "ami-e1496384"
     "us-west-1"      = "ami-65e0e305"
     "us-west-2"      = "ami-a042f4d8"
+  }
+}
+variable "rhelamis" {
+  type = "map"
+
+  default = {
+	"eu-central-1" = "ami-c86c3f23"
+	"us-east-1" = "ami-6871a115"
+	"ap-northeast-1" = "ami-6b0d5f0d"
+	"ap-northeast-2" = "ami-3eee4150"
+	"ap-south-1" = "ami-5b673c34"
+	"ap-southeast-1" = "ami-76144b0a"
+	"ap-southeast-2" = "ami-67589505"
+	"ca-central-1" = "ami-49f0762d"
+	"eu-west-1" = "ami-7c491f05"
+	"eu-west-2" = "ami-7c1bfd1b"
+	"eu-west-3" = "ami-5026902d"
+	"sa-east-1" = "ami-b0b7e3dc"
+	"us-east-2" = "ami-03291866"
+	"us-west-1" = "ami-18726478"
+	"us-west-2" =  "ami-28e07e50"
   }
 }
