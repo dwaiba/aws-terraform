@@ -1,4 +1,4 @@
-# AWS user-data with Terraform - CentOS 7.5 in all regions with disk.
+# AWS user-data with Terraform - RHEL 7.5 and CentOS 7.5 in all regions with disk and packed with tools.
 
 1. [Download and Install Terraform](https://www.terraform.io/downloads.html)
 2. [Upload your public ssh key via EC2 console for your account and region (eu-central-1 default)](https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`. **Please keep you private pem file handy and note the path.**
@@ -13,11 +13,12 @@
 > Post provisioning **Automatic** `curl http://169.254.169.254/latest/user-data|sudo sh` - via terraform `remote-exec` executes `prep-centos7.txt` `shell-script` file contents of this repo available as user-data, post provisioning. Various type besides `shell-script` including direct `cloud-init` commands may be passed as multipart as part of the user-data via terraform `remote-exec`.
 6. To destroy `terraform destroy`
 
-> AWS AMIs per regions used in map is as per maintained [CentOS Wiki](https://wiki.centos.org/Cloud/AWS#head-78d1e3a4e6ba5c5a3847750d88266916ffe69648)
+> AWS **RHEl 7.5** AMIs per regios as per `aws ec2 describe-images --owners 309956199498 --query 'Images[*].[CreationDate,Name,ImageId]' --filters "Name=name,Values=RHEL-7.5?*GA*" --region <<region-name>> --output table | sort -r` - Red Hat [Soln. #15356](https://access.redhat.com/solutions/15356)
+> AWS **CentOS** AMIs per regions used in map is as per maintained [CentOS Wiki](https://wiki.centos.org/Cloud/AWS#head-78d1e3a4e6ba5c5a3847750d88266916ffe69648)
 
 ### Login
 
-`chmod 400 <<your private pem file>>.pem && ssh -i <<your private pem file>>.pem centos@<<public address>>`
+`chmod 400 <<your private pem file>>.pem && ssh -i <<your private pem file>>.pem ec2-user/centos@<<public address>>`
 
 
 ### Terraform Graph
