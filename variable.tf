@@ -13,6 +13,14 @@ variable "distro" {
   description = "Please input: rhel75 or centos7"
 }
 
+variable "rheluser"{
+  default = "ec2-user"
+}
+
+variable "centosuser"{
+  default ="centos"
+}
+
 variable "centosamis" {
   type = "map"
 

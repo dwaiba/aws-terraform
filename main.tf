@@ -34,7 +34,7 @@ resource "aws_ebs_volume" "awsvol" {
 resource "null_resource" "provision" {
   provisioner "remote-exec" {
     connection {
-      user        = "${var.distro == "rhel75" ? ec2-user : centos}"
+      user        = "${var.distro == "rhel75" ? var.rheluser : var.centosuser}"
       private_key = "${file(var.private_key_path)}"
       host        = "${aws_instance.awsweb.public_dns}"
       agent       = false
