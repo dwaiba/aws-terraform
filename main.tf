@@ -37,8 +37,6 @@ resource "aws_ebs_volume" "awsvol" {
   count             = "${var.instance-count}"
   availability_zone = "${aws_instance.awsweb.availability_zone}"
   size              = "${var.disk_sizegb}"
-  volume_id         = "${element(aws_ebs_volume.volumes.*.id, count.index)}"
-  instance_id       = "${element(aws_instance.instances.*.id, count.index)}"
   depends_on        = ["aws_instance.awsweb"]
 }
 
