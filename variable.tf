@@ -6,6 +6,14 @@ variable "private_key_path" {
   description = "Local Path to the private key pem file - for ssh login. Example: ~/.ssh/terraform.pem for post provision remote-exec. Port 22 needs to be opened before provisioning for ingress"
 }
 
+variable "tag_prefix" {
+  description = "Prefix Tag to VMs for group identification"
+}
+
+variable "count_vms" {
+  description = "Mumber of VMs to create, each with same size disk mounted and available at /data as ext4 fs. All VMs would have same tools."
+}
+
 variable "region" {
   description = "Regions may be ap-northeast-1, ap-northeast-2, ap-south-1, ap-southeast-1, ap-southeast-2, ca-central-1, eu-central-1, eu-west-1, eu-west-2, eu-west-3, sa-east-1, us-east-1,us-east-2, us-west-1, us-west-2"
 }
@@ -13,7 +21,7 @@ variable "distro" {
   description = "Please input: rhel75 or centos7"
 }
 variable "disk_sizegb"{
-  description = "Please input the disk size in GB. This would be automatically available as fs ext4 mounted on /data with docker CE volumes linked to /data/docker. "
+  description = "Please input the disk size in GB to be attached to each VM. This would be automatically available as fs ext4 mounted on /data with docker CE volumes linked to /data/docker. "
 }
 variable "rheluser"{
   default = "ec2-user"

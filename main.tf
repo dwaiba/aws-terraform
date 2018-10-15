@@ -1,5 +1,5 @@
 variable "instance-count" {
-  default = "2"
+  default = "${var.count_vms}"
 }
 
 resource "aws_volume_attachment" "ebs_att" {
@@ -27,7 +27,7 @@ resource "aws_instance" "awsweb" {
   key_name                    = "${var.key_name}"
 
   tags {
-    "Name" = "instance-${count.index}"
+    "Name" = "${var.tag_prefix}-${count.index}"
   }
 
   user_data = "${var.distro == "rhel75" ? file("prep-rhel75.txt") : file("prep-centos7.txt")}"
