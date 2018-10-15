@@ -41,6 +41,11 @@ resource "aws_ebs_volume" "awsvol" {
 }
 
 resource "null_resource" "provision" {
+    count = "${var.instance_count}"
+  triggers {
+    current_ec2_instance_id = "${element(aws_instance.awsweb.*.id, count.index)}"
+    instance_number = "${count.index + 1}"
+  }
   provisioner "remote-exec" {
     connection {
       user        = "${var.distro == "rhel75" ? var.rheluser : var.centosuser}"
@@ -51,10 +56,12 @@ resource "null_resource" "provision" {
     }
 
     inline = [
-      "curl http://169.254.169.254/latest/user-data|sudo sh",
+      "echo INSTANCE_NUMBER=${self.triggers["instance_number"]} && curl http://169.254.169.254/latest/user-data|sudo sh",
     ]
   }
-
+  lifecycle {
+    create_before_destroy = true
+  }
   depends_on = ["aws_instance.awsweb", "aws_ebs_volume.awsvol", "aws_volume_attachment.ebs_att"]
 }
 
