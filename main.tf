@@ -59,21 +59,21 @@ resource "null_resource" "provision" {
 }
 
 output "ami" {
-  value = "${element(aws_instance.awsweb.*.id, count.index)}"
+  value = "${aws_instance.awsweb.*.id}"
 }
 
 output "zone" {
-  value = "${element(aws_instance.awsweb.*.availability_zone, count.index)}"
+  value = "${aws_instance.awsweb.*.availability_zone}"
 }
 
 output "volumeid" {
-  value = "${element(aws_ebs_volume.awsvol.*.id, count.index)}"
+  value = "${aws_ebs_volume.awsvol.*.id}"
 }
 
 output "address" {
-  value = "${element(aws_instance.awsweb.*.public_dns, count.index)}"
+  value = "${aws_instance.awsweb.*.public_dns}"
 }
 
 output "connect" {
-  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@${element(aws_instance.awsweb.*.public_dns, count.index)}"
+  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@${aws_instance.awsweb.*.public_dns}"
 }
