@@ -1,9 +1,5 @@
-variable "instance-count" {
-  default = "${var.count_vms}"
-}
-
 resource "aws_volume_attachment" "ebs_att" {
-  count        = "${var.instance-count}"
+  count        = "${var.count_vms}"
   device_name  = "/dev/sdh"
   volume_id = "${element(aws_ebs_volume.awsvol.*.id, count.index)}"
   instance_id = "${element(aws_instance.awsweb.*.id, count.index)}"
@@ -17,7 +13,7 @@ resource "aws_instance" "awsweb" {
 
                                     availability_zone = "${var.region}a"
                                     **/
-  count = "${var.instance-count}"
+  count = "${var.count_vms}"
 
   ami = "${var.distro == "rhel75" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
 
@@ -34,14 +30,14 @@ resource "aws_instance" "awsweb" {
 }
 
 resource "aws_ebs_volume" "awsvol" {
-  count             = "${var.instance-count}"
+  count             = "${var.count_vms}"
   availability_zone = "${element(aws_instance.awsweb.*.availability_zone, count.index)}"
   size              = "${var.disk_sizegb}"
   depends_on        = ["aws_instance.awsweb"]
 }
 
 resource "null_resource" "provision" {
-    count = "${var.instance-count}"
+    count = "${var.count_vms}"
   triggers {
     current_ec2_instance_id = "${element(aws_instance.awsweb.*.id, count.index)}"
     instance_number = "${count.index + 1}"
