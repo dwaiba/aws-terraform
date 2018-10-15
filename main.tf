@@ -1,4 +1,9 @@
+variable "instance-count" {
+  default = "2"
+}
+
 resource "aws_volume_attachment" "ebs_att" {
+  count        = "${var.instance-count}"
   device_name  = "/dev/sdh"
   volume_id    = "${aws_ebs_volume.awsvol.id}"
   instance_id  = "${aws_instance.awsweb.id}"
@@ -7,11 +12,13 @@ resource "aws_volume_attachment" "ebs_att" {
 
 resource "aws_instance" "awsweb" {
   /**
-        ami = "${lookup(var.centosamis, var.region)}"
+          ami = "${lookup(var.centosamis, var.region)}"
 
 
-                                  availability_zone = "${var.region}a"
-                                  **/
+                                    availability_zone = "${var.region}a"
+                                    **/
+  count = "${var.instance-count}"
+
   ami = "${var.distro == "rhel75" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
 
   instance_type = "t2.xlarge"
@@ -20,15 +27,18 @@ resource "aws_instance" "awsweb" {
   key_name                    = "${var.key_name}"
 
   tags {
-    Name = "awsweb"
+    "Name" = "instance-${count.index}"
   }
 
   user_data = "${var.distro == "rhel75" ? file("prep-rhel75.txt") : file("prep-centos7.txt")}"
 }
 
 resource "aws_ebs_volume" "awsvol" {
+  count             = "${var.instance-count}"
   availability_zone = "${aws_instance.awsweb.availability_zone}"
   size              = "${var.disk_sizegb}"
+  volume_id         = "${element(aws_ebs_volume.volumes.*.id, count.index)}"
+  instance_id       = "${element(aws_instance.instances.*.id, count.index)}"
   depends_on        = ["aws_instance.awsweb"]
 }
 
