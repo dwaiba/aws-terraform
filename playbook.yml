@@ -1,11 +1,13 @@
 - hosts: all
-# Basic deploy of a service
-- terraform:
-    project_path: '{{ project_dir }}'
-    state: present
 
-# init
-- terraform:
-    project_path: 'project/'
-    state: "{{ state }}"
-    force_init: true
+  tasks:
+# Basic deploy of a service
+    - terraform:
+        project_path: '{{ project_dir }}'
+        state: present
+
+    # init
+    - terraform:
+        project_path: 'project/'
+        state: "{{ state }}"
+        force_init: true
