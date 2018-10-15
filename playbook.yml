@@ -2,7 +2,7 @@
   vars:
     name: Terraform project dir
     project_dir: "/home/ec2-user/aws-terraform"
-    home_dir: "/home/ec2-user"
+    home_dir: "/home/ec2-user/aws-terraform"
   tasks:
     - git:
         repo: 'https://github.com/dwaiba/aws-terraform'
