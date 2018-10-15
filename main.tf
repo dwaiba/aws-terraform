@@ -35,7 +35,7 @@ resource "aws_instance" "awsweb" {
 
 resource "aws_ebs_volume" "awsvol" {
   count             = "${var.instance-count}"
-  availability_zone = "${aws_instance.awsweb.availability_zone}"
+  availability_zone = "${element(aws_instance.awsweb.*.availability_zone, count.index)}"
   size              = "${var.disk_sizegb}"
   depends_on        = ["aws_instance.awsweb"]
 }
@@ -74,6 +74,6 @@ output "address" {
   value = "${aws_instance.awsweb.*.public_dns}"
 }
 
-output "connect" {
-  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@${aws_instance.awsweb.*.public_dns}"
+output "connect_as" {
+  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@<<public_dns>>"
 }
