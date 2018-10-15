@@ -45,7 +45,7 @@ resource "null_resource" "provision" {
     connection {
       user        = "${var.distro == "rhel75" ? var.rheluser : var.centosuser}"
       private_key = "${file(var.private_key_path)}"
-      host        = "${aws_instance.awsweb.public_dns}"
+      host        = "${element(aws_instance.awsweb.*.public_dns, count.index)}"
       agent       = false
       timeout     = "10s"
     }
