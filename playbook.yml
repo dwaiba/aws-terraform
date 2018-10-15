@@ -1,13 +1,44 @@
 - hosts: all
-
+  vars:
+    name: Terraform project dir
+    project_dir: "/home/ec2-user/aws-terraform"
+    home_dir: "/home/ec2-user"
   tasks:
+    - git:
+        repo: 'https://github.com/dwaiba/aws-terraform'
+        dest: "{{ home_dir }}"
+        clone: yes
+        update: yes
 # Basic deploy of a service
     - terraform:
-        project_path: '.'
+        project_path: "{{ project_dir }}"
         state: present
 
     # init
     - terraform:
-        project_path: '.'
+        project_path: '/home/ec2-user/aws-terraform'
         state: "{{ state }}"
         force_init: true
+          - debug:
+        var: init_result.stdout_lines
+
+
+    - name: terraform plan
+      terraform:
+        project_path: "{{ project_dir }}"
+        plan_file: "{{ project_dir }}/myplan.tfplan"
+        state: planned
+      register: plan_result
+
+    - debug:
+         var: plan_result.stdout_lines
+
+    - name: terraform apply
+      terraform:
+        project_path: "{{ project_dir }}"
+        state: present
+        plan_file: "{{ project_dir }}/myplan.tfplan"
+      register: apply_result
+
+    - debug:
+         var: apply_result.stdout_lines
