@@ -11,7 +11,7 @@ variable "tag_prefix" {
 }
 
 variable "count_vms" {
-  description = "Mumber of VMs to create, each with same size disk mounted and available at /data as ext4 fs. All VMs would have same tools."
+  description = "Number of VMs to create, each with same size disk mounted and available at /data as ext4 fs. All VMs would have same tools."
 }
 
 variable "region" {
