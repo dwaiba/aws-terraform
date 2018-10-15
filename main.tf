@@ -1,3 +1,4 @@
+/**
 resource "aws_vpc" "mainvpc" {
   cidr_block = "172.31.0.0/16"
 }
@@ -8,9 +9,7 @@ resource "aws_default_security_group" "default" {
   ingress {
     protocol = -1
 
-    /**
         self      = true
-    **/
     cidr_blocks = ["0.0.0.0/0"]
 
     from_port = 0
@@ -24,6 +23,7 @@ resource "aws_default_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+**/
 
 resource "aws_volume_attachment" "ebs_att" {
   count        = "${var.count_vms}"
@@ -35,11 +35,11 @@ resource "aws_volume_attachment" "ebs_att" {
 
 resource "aws_instance" "awsweb" {
   /**
-            ami = "${lookup(var.centosamis, var.region)}"
+              ami = "${lookup(var.centosamis, var.region)}"
 
 
-                                      availability_zone = "${var.region}a"
-                                      **/
+                                        availability_zone = "${var.region}a"
+                                        **/
   count = "${var.count_vms}"
 
   ami = "${var.distro == "rhel75" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
