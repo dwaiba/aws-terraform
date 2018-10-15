@@ -5,8 +5,8 @@ variable "instance-count" {
 resource "aws_volume_attachment" "ebs_att" {
   count        = "${var.instance-count}"
   device_name  = "/dev/sdh"
-  volume_id    = "${aws_ebs_volume.awsvol.id}"
-  instance_id  = "${aws_instance.awsweb.id}"
+  volume_id = "${element(aws_ebs_volume.awsvol.*.id, count.index)}"
+  instance_id = "${element(aws_instance.awsweb.*.id, count.index)}"
   force_detach = true
 }
 
@@ -59,25 +59,21 @@ resource "null_resource" "provision" {
 }
 
 output "ami" {
-  value = "${aws_instance.awsweb.id}"
+  value = "${element(aws_instance.awsweb.*.id, count.index)}"
 }
 
 output "zone" {
-  value = "${aws_instance.awsweb.availability_zone}"
+  value = "${element(aws_instance.awsweb.*.availability_zone, count.index)}"
 }
 
 output "volumeid" {
-  value = "${aws_ebs_volume.awsvol.id}"
-}
-
-output "volumearn" {
-  value = "${aws_ebs_volume.awsvol.arn}"
+  value = "${element(aws_ebs_volume.awsvol.*.id, count.index)}"
 }
 
 output "address" {
-  value = "${aws_instance.awsweb.public_dns}"
+  value = "${element(aws_instance.awsweb.*.public_dns, count.index)}"
 }
 
 output "connect" {
-  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@${aws_instance.awsweb.public_dns}"
+  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@${element(aws_instance.awsweb.*.public_dns, count.index)}"
 }
