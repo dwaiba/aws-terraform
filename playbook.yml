@@ -19,8 +19,8 @@
         project_path: '/home/ec2-user/aws-terraform'
         state: "{{ state }}"
         force_init: true
-          - debug:
-        var: init_result.stdout_lines
+    - debug:
+         var: init_result.stdout_lines
 
 
     - name: terraform plan
