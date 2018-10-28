@@ -55,13 +55,13 @@ Pre-req:
 1. private pem file per region available locally and has chmod 400
 2. AWS Access key ID, Secret Access key should be available for aws account.
 
-Plan:
+:beginner: Plan:
 `export AWS_ACCESS_KEY_ID="<<your AWS Access ID>>" && export AWS_SECRET_ACCESS_KEY="<<your AWS_SECRET_ACCESS_KEY>>" && export AWS_DEFAULT_REGION="<your AWS_DEFAULT_REGION>>" && terraform init && terraform plan -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel75 or centos7>>  -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel75 -out "run.plan"`
 
-Apply:
+:beginner: Apply:
 `terraform apply "run.plan"`
 
-Destroy:
+:beginner: Destroy:
 `export AWS_ACCESS_KEY_ID="<<your AWS Access ID>>" && export AWS_SECRET_ACCESS_KEY="<<your AWS_SECRET_ACCESS_KEY>>" && export AWS_DEFAULT_REGION="<your AWS_DEFAULT_REGION>>" && terraform destroy -var count_vms=2 -var disk_sizegb=50 -var distro=rhel75 -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel75`
 
 ### Reporting bugs
