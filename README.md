@@ -51,7 +51,8 @@ Please shoot in dockerized format:
 
 https://github.com/dwaiba/aws-terraform
 
-Pre-req: 
+:beginner: Pre-req: 
+
 1. private pem file per region available locally and has chmod 400
 2. AWS Access key ID, Secret Access key should be available for aws account.
 
