@@ -4,14 +4,14 @@ Table of Contents (AWS RHEL75/centos7 with disks farm with Terraform in any regi
 1. [AWS user-data with Terraform - RHEL 7.5 and CentOS 7.5 in all regions with disk and with tools](#aws-user-data-with-terraform-rhel-7.5-and-centOS-7.5-in-all-regions-with-disk-and-with-tools)
 2. [login](#login)
 3. [Terraform graph](#terraform-graph)
-4. [Automatic provisioning](#automatic-provisioning)
+4. [Automatic provisioning](#-automatic-provisioning)
 5. [Reporting bugs](#reporting-bugs)
 6. [Patches and pull requests](#patches-and-pull-requests)
 
 ### AWS user-data with Terraform - RHEL 7.5 and CentOS 7.5 in all regions with disk and with tools
 
 1. [Download and Install Terraform](https://www.terraform.io/downloads.html)
-2. [Upload your public ssh key via EC2 console for your account and region (eu-central-1 default)](https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`. **Please keep you private pem file handy and note the path.**
+2. [Create new pair via EC2 console for your account and region (eu-central-1 default)](https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`. **Please keep you private pem file handy and note the path.**
 3. please export the following - 
 `export AWS_ACCESS_KEY_ID="<<your access key>>" && export AWS_SECRET_ACCESS_KEY="<<your secret access key>>" && export AWS_DEFAULT_REGION="eu-central-1"`. 
 
@@ -47,7 +47,7 @@ Please shoot in dockerized format:
 
  A live example is [here](http://buildservers.westeurope.cloudapp.azure.com:5002/) for this project. 
 
-### Automatic Provisioning
+### :high_brightness: Automatic Provisioning
 
 https://github.com/dwaiba/aws-terraform
 
