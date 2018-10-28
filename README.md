@@ -4,7 +4,7 @@ Table of Contents (AWS RHEL75/centos7 with disks farm with Terraform in any regi
 1. [AWS user-data with Terraform - RHEL 7.5 and CentOS 7.5 in all regions with disk and with tools](#aws-user-data-with-terraform-rhel-7.5-and-centOS-7.5-in-all-regions-with-disk-and-with-tools)
 2. [login](#login)
 3. [Terraform graph](#terraform-graph)
-4. [Automatic provisioning](#high_brightness-automatic-provisioning)
+4. **[Automatic provisioning](#high_brightness-automatic-provisioning)**
 5. [Reporting bugs](#reporting-bugs)
 6. [Patches and pull requests](#patches-and-pull-requests)
 
