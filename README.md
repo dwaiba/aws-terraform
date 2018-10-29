@@ -17,7 +17,7 @@ Table of Contents (AWS RHEL75/centos7 with disks farm with Terraform in any regi
 
 > You can generate new ones from your EC2 console via the url for your `<<account_user>>` - `https://console.aws.amazon.com/iam/home?region=eu-central-1#/users/<<account_user>>?section=security_credentials`.
 
-4. **Please add ingress allowance rule for port 22 over TCP in the default region VPC for `remote-exe` via ssh agent run in the project to target server - from the ec2 console for the region - eu-central-1 or any other region explicitly that you are passing as paramameter.**
+4. **Please add ingress allowance rule for port 22 over TCP in the default region VPC for `remote-exe` via ssh agentless to run locally in the project to target server - from the ec2 console for the region - eu-central-1 or any other region explicitly that you are passing as paramameter.**
 5. `git clone https://github.com/dwaiba/aws-terraform && cd aws-terraform && terraform init && terraform plan -out "run.plan" && terraform apply "run.plan"`.
 
 > Post provisioning **Automatic** `curl http://169.254.169.254/latest/user-data|sudo sh` - via terraform `remote-exec` executes `prep-centos7.txt` `shell-script` file contents of this repo available as user-data, post provisioning. Various type besides `shell-script` including direct `cloud-init` commands may be passed as multipart as part of the user-data via terraform `remote-exec`.
@@ -55,6 +55,7 @@ https://github.com/dwaiba/aws-terraform
 
 1. private pem file per region available locally and has chmod 400
 2. AWS Access key ID, Secret Access key should be available for aws account.
+3. **Port `22` should be open for the Default Security group for the respective regions.**
 
 :beginner: Plan:
 
