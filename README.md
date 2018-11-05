@@ -7,6 +7,8 @@ Table of Contents (AWS RHEL75/centos7 with disks farm with Terraform in any regi
 4. **[Automatic provisioning](#high_brightness-automatic-provisioning)**
 5. [Reporting bugs](#reporting-bugs)
 6. [Patches and pull requests](#patches-and-pull-requests)
+6. [License](#license)
+7. [Code of conduct](#code-of-conduct)
 
 ### AWS user-data with Terraform - RHEL 7.5 and CentOS 7.5 in all regions with disk and with tools
 
@@ -77,3 +79,9 @@ Bugs have auto template defined. Please view it [here](https://github.com/dwaiba
 ### Patches and pull requests
 
 Patches can be submitted as GitHub pull requests. If using GitHub please make sure your branch applies to the current master as a 'fast forward' merge (i.e. without creating a merge commit). Use the `git rebase` command to update your branch to the current master if necessary.
+
+### License
+  * Please see the [LICENSE file](https://github.com/dwaiba/aws-terraform/blob/master/LICENSE) for licensing information.
+
+### Code of Conduct
+  * Please see the [Code of Conduct](https://github.com/dwaiba/aws-terraform/blob/master/CODE_OF_CONDUCT.md)
