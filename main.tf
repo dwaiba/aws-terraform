@@ -35,11 +35,11 @@ resource "aws_volume_attachment" "ebs_att" {
 
 resource "aws_instance" "awsweb" {
   /**
-              ami = "${lookup(var.centosamis, var.region)}"
+                ami = "${lookup(var.centosamis, var.region)}"
 
 
-                                        availability_zone = "${var.region}a"
-                                        **/
+                                          availability_zone = "${var.region}a"
+                                          **/
   count = "${var.count_vms}"
 
   ami = "${var.distro == "rhel75" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
@@ -61,6 +61,10 @@ resource "aws_ebs_volume" "awsvol" {
   availability_zone = "${element(aws_instance.awsweb.*.availability_zone, count.index)}"
   size              = "${var.disk_sizegb}"
   depends_on        = ["aws_instance.awsweb"]
+
+  tags {
+    "Name" = "${var.tag_prefix}-${count.index}"
+  }
 }
 
 resource "null_resource" "provision" {
