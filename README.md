@@ -5,10 +5,11 @@ Table of Contents (AWS RHEL75/centos7 with disks farm with Terraform in any regi
 2. [login](#login)
 3. [Terraform graph](#terraform-graph)
 4. **[Automatic provisioning](#high_brightness-automatic-provisioning)**
-5. [Reporting bugs](#reporting-bugs)
-6. [Patches and pull requests](#patches-and-pull-requests)
-6. [License](#license)
-7. [Code of conduct](#code-of-conduct)
+5.  [Via Ansible terraform module](#via-ansible-terraform-module)
+6. [Reporting bugs](#reporting-bugs)
+7. [Patches and pull requests](#patches-and-pull-requests)
+8. [License](#license)
+9. [Code of conduct](#code-of-conduct)
 
 ### AWS user-data with Terraform - RHEL 7.5 and CentOS 7.5 in all regions with disk and with tools
 
@@ -70,6 +71,15 @@ https://github.com/dwaiba/aws-terraform
 :beginner: Destroy:
 
 `export AWS_ACCESS_KEY_ID="<<your AWS Access ID>>" && export AWS_SECRET_ACCESS_KEY="<<your AWS_SECRET_ACCESS_KEY>>" && export AWS_DEFAULT_REGION="<your AWS_DEFAULT_REGION>>" && terraform destroy -var count_vms=2 -var disk_sizegb=50 -var distro=rhel75 -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel75`
+
+### Via Ansible terraform module
+> Ansible now has a [terraform module](https://docs.ansible.com/ansible/2.7/modules/terraform_module.html) and a playbook yml file is included in this repository with a sample inventory with `localhost`
+
+1. Clone this repository in the ansible box as `cd /data && git clone https://github.com/dwaiba/aws-terraform`.
+
+2. **Change the variables as required in `aws-terraform_playbook.yml`.**
+
+3. Kick as `ansible-playbook -i inventory aws-terraform_playbook.yml`.
 
 ### Reporting bugs
 

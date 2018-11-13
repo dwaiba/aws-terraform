@@ -1,0 +1,17 @@
+- name: Provide infrastructure
+  terraform:
+    project_path: "{{ project_dir }}"
+    state: "{{ state }}"
+    force_init: true
+    variables:
+        count_vms: "{{ count_vms }}"
+        disk_sizegb: "{{ disk_sizegb }}"
+        distro: "{{ distro }}"
+        key_name: "{{ key_name }}"
+        private_key_path: "{{ private_key_path }}"
+        region: "{{ region }}"
+        tag_prefix: "{{ tag_prefix }}"
+  register: command_output
+- debug: msg="{{command_output.stdout}}"
+- debug: msg="{{command_output.command}}"
+- debug: msg="{{command_output.outputs}}"

@@ -1,0 +1,13 @@
+- hosts: all
+  vars:
+    name: Terraform project setup
+    state: present
+    count_vms: 1
+    disk_sizegb: 50
+    distro: "<<rhel75 or centos7>>"
+    key_name: "testingdwai"
+    private_key_path: "/data/testingdwai.pem"
+    region: "eu-central-1"
+    tag_prefix: "toolsrhel75"
+  roles:
+    - role: terraform
