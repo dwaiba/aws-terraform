@@ -9,7 +9,7 @@
         distro: "{{ distro }}"
         key_name: "{{ key_name }}"
         private_key_path: "{{ private_key_path }}"
-        region: "{{ region }}"
+        region: "{{ awsregion }}"
         tag_prefix: "{{ tag_prefix }}"
   register: command_output
 - debug: msg="{{command_output.stdout}}"

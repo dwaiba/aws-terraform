@@ -77,9 +77,13 @@ https://github.com/dwaiba/aws-terraform
 
 1. Clone this repository in the ansible box as `cd /data && git clone https://github.com/dwaiba/aws-terraform`.
 
-2. **Change the variables as required in `aws-terraform_playbook.yml`.**
+2. Set the following `export AWS_ACCESS_KEY_ID="<< >>" && export AWS_SECRET_ACCESS_KEY="<< >>" && export AWS_DEFAULT_REGION="eu-central-1"`
 
-3. Kick as `ansible-playbook -i inventory aws-terraform_playbook.yml`.
+3. **Change the variables as required in `aws-terraform_playbook.yml`.**
+
+4. Kick as `ansible-playbook -i inventory aws-terraform_playbook.yml`.
+
+5. To destroy set `state` variable in `aws-terraform_playbook.yml` to `absent`.
 
 ### Reporting bugs
 

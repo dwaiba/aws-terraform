@@ -2,12 +2,13 @@
   vars:
     name: Terraform project setup
     state: present
+    project_dir : "/data/aws-terraform"
     count_vms: 1
     disk_sizegb: 50
     distro: "<<rhel75 or centos7>>"
-    key_name: "testingdwai"
-    private_key_path: "/data/testingdwai.pem"
-    region: "eu-central-1"
+    key_name: "<<your public key name in EC2 console"
+    private_key_path: "<<local location of your private pem file corresponding to the above>>"
+    awsregion: "eu-central-1"
     tag_prefix: "toolsrhel75"
   roles:
     - role: terraform
