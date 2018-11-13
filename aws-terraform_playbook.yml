@@ -1,12 +1,14 @@
 - hosts: all
   vars:
-    name: Terraform project setup
+    name: AWS Terraform project setup for ansible
     state: present
     project_dir : "/data/aws-terraform"
+    AWS_ACCESS_KEY_ID: "<<Put your ACCOUNT ACCESS KEY>>"
+    AWS_SECRET_ACCESS_KEY: "<<Put your ACCOUNT SECRET ACCESS KEY>>"
     count_vms: 1
     disk_sizegb: 50
     distro: "<<rhel75 or centos7>>"
-    key_name: "<<your public key name in EC2 console"
+    key_name: "<<your public key name in EC2 console>>"
     private_key_path: "<<local location of your private pem file corresponding to the above>>"
     awsregion: "eu-central-1"
     tag_prefix: "toolsrhel75"

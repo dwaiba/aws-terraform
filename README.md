@@ -15,8 +15,7 @@ Table of Contents (AWS RHEL75/centos7 with disks farm with Terraform in any regi
 
 1. [Download and Install Terraform](https://www.terraform.io/downloads.html)
 2. [Create new pair via EC2 console for your account and region (eu-central-1 default)](https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`. **Please keep you private pem file handy and note the path.**
-3. please export the following - 
-`export AWS_ACCESS_KEY_ID="<<your access key>>" && export AWS_SECRET_ACCESS_KEY="<<your secret access key>>" && export AWS_DEFAULT_REGION="eu-central-1"`. 
+3. Collect your  `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY="<< >>"`
 
 > You can generate new ones from your EC2 console via the url for your `<<account_user>>` - `https://console.aws.amazon.com/iam/home?region=eu-central-1#/users/<<account_user>>?section=security_credentials`.
 
@@ -58,11 +57,13 @@ https://github.com/dwaiba/aws-terraform
 
 1. private pem file per region available locally and has chmod 400
 2. AWS Access key ID, Secret Access key should be available for aws account.
+
+> You can generate new ones from your EC2 console via the url for your `<<account_user>>` - `https://console.aws.amazon.com/iam/home?region=eu-central-1#/users/<<account_user>>?section=security_credentials`.
 3. **Port `22` should be open for the Default Security group for the respective regions.**
 
 :beginner: Plan:
 
-`export AWS_ACCESS_KEY_ID="<<your AWS Access ID>>" && export AWS_SECRET_ACCESS_KEY="<<your AWS_SECRET_ACCESS_KEY>>" && export AWS_DEFAULT_REGION="<your AWS_DEFAULT_REGION>>" && terraform init && terraform plan -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel75 or centos7>>  -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel75 -out "run.plan"`
+`terraform init && terraform plan -var aws_access_key=<<your AWS_ACCESS_KEY_ID>> -var aws_secret_key=<<Your AWS_SECRET_ACCESS_KEY>>  -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel75 or centos7>>  -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel75 -out "run.plan"`
 
 :beginner: Apply:
 
@@ -70,14 +71,14 @@ https://github.com/dwaiba/aws-terraform
 
 :beginner: Destroy:
 
-`export AWS_ACCESS_KEY_ID="<<your AWS Access ID>>" && export AWS_SECRET_ACCESS_KEY="<<your AWS_SECRET_ACCESS_KEY>>" && export AWS_DEFAULT_REGION="<your AWS_DEFAULT_REGION>>" && terraform destroy -var count_vms=2 -var disk_sizegb=50 -var distro=rhel75 -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel75`
+`terraform destroy -var aws_access_key=<<your AWS_ACCESS_KEY_ID>> -var aws_secret_key=<<Your AWS_SECRET_ACCESS_KEY>>  -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel75 or centos7>>  -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel75`
 
 ### Via Ansible terraform module
 > Ansible now has a [terraform module](https://docs.ansible.com/ansible/2.7/modules/terraform_module.html) and a playbook yml file is included in this repository with a sample inventory with `localhost`
 
 1. Clone this repository in the ansible box as `cd /data && git clone https://github.com/dwaiba/aws-terraform`.
 
-2. Set the following `export AWS_ACCESS_KEY_ID="<< >>" && export AWS_SECRET_ACCESS_KEY="<< >>" && export AWS_DEFAULT_REGION="eu-central-1"`
+2. Collect your  `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY="<< >>"`
 
 3. **Change the variables as required in `aws-terraform_playbook.yml`.**
 
