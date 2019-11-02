@@ -28,56 +28,56 @@ variable "region" {
 variable "distro" {
   description = "Please input: rhel75 or centos7"
 }
-variable "disk_sizegb"{
+variable "disk_sizegb" {
   description = "Please input the disk size in GB to be attached to each VM. This would be automatically available as fs ext4 mounted on /data with docker CE volumes linked to /data/docker. "
 }
-variable "rheluser"{
+variable "rheluser" {
   default = "ec2-user"
 }
 
-variable "centosuser"{
-  default ="centos"
+variable "centosuser" {
+  default = "centos"
 }
 
 variable "centosamis" {
   type = "map"
 
   default = {
-    "ap-northeast-1" = "ami-25bd2743"
-    "ap-northeast-2" = "ami-7248e81c"
-    "ap-south-1"     = "ami-5d99ce32"
-    "ap-southeast-1" = "ami-d2fa88ae"
-    "ap-southeast-2" = "ami-b6bb47d4"
-    "ca-central-1"   = "ami-dcad28b8"
-    "eu-central-1"   = "ami-337be65c"
-    "eu-west-1"      = "ami-6e28b517"
-    "eu-west-2"      = "ami-ee6a718a"
-    "eu-west-3"      = "ami-bfff49c2"
-    "sa-east-1"      = "ami-f9adef95"
-    "us-east-1"      = "ami-4bf3d731"
-    "us-east-2"      = "ami-e1496384"
-    "us-west-1"      = "ami-65e0e305"
-    "us-west-2"      = "ami-a042f4d8"
+    "ap-northeast-1" = "ami-02aa4ebefd694e352"
+    "ap-northeast-2" = "ami-0c608d9a5c8069eb0"
+    "ap-south-1"     = "ami-0ca94d8c5e5d84b0d"
+    "ap-southeast-1" = "ami-076898e82e2b6835a"
+    "ap-southeast-2" = "ami-04c87826f51872f21"
+    "ca-central-1"   = "ami-068051358509d0288"
+    "eu-central-1"   = "ami-0b21825ca12563d6f"
+    "eu-west-1"      = "ami-0eee6eb870dc1cefa"
+    "eu-west-2"      = "ami-07b060fcfbdd5ca18"
+    "eu-west-3"      = "ami-04a00ba5969dc844c"
+    "sa-east-1"      = "ami-083c730c2d91b0dd3"
+    "us-east-1"      = "ami-03248a0341eadb1f1"
+    "us-east-2"      = "ami-0d302576dc8cef261"
+    "us-west-1"      = "ami-01dd5a8ef26e6341d"
+    "us-west-2"      = "ami-024b56adf74074ca6"
   }
 }
 variable "rhelamis" {
   type = "map"
 
   default = {
-	"eu-central-1" = "ami-c86c3f23"
-	"us-east-1" = "ami-6871a115"
-	"ap-northeast-1" = "ami-6b0d5f0d"
-	"ap-northeast-2" = "ami-3eee4150"
-	"ap-south-1" = "ami-5b673c34"
-	"ap-southeast-1" = "ami-76144b0a"
-	"ap-southeast-2" = "ami-67589505"
-	"ca-central-1" = "ami-49f0762d"
-	"eu-west-1" = "ami-7c491f05"
-	"eu-west-2" = "ami-7c1bfd1b"
-	"eu-west-3" = "ami-5026902d"
-	"sa-east-1" = "ami-b0b7e3dc"
-	"us-east-2" = "ami-03291866"
-	"us-west-1" = "ami-18726478"
-	"us-west-2" =  "ami-28e07e50"
+    "eu-central-1"   = "ami-062dacb006c5860f9"
+    "us-east-1"      = "ami-0916c408cb02e310b"
+    "ap-northeast-1" = "ami-0dc41c7805e171046"
+    "ap-northeast-2" = "ami-0b5425629eb18a008"
+    "ap-south-1"     = "ami-021912f2c8d2c70c9"
+    "ap-southeast-1" = "ami-07cafca3788493264"
+    "ap-southeast-2" = "ami-0f1ef883e90ca71c0"
+    "ca-central-1"   = "ami-05816666b3178f208"
+    "eu-west-1"      = "ami-0a0d2dc2f521ddce6"
+    "eu-west-2"      = "ami-096fbd31de0375d2a"
+    "eu-west-3"      = "ami-025fb013ee01513b5"
+    "sa-east-1"      = "ami-048b2348ac2ccfc53"
+    "us-east-2"      = "ami-03cfe750d5ea278f5"
+    "us-west-1"      = "ami-0388d197bb42be9be"
+    "us-west-2"      = "ami-04b7963c90686dd4c"
   }
 }

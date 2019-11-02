@@ -55,7 +55,7 @@ resource "aws_instance" "awsweb" {
   key_name                    = "${var.key_name}"
 
   tags {
-    "Name" = "${var.tag_prefix}-${count.index}"
+    Name = "${var.tag_prefix}-${count.index}"
   }
 
   user_data = "${var.distro == "rhel75" ? file("prep-rhel75.txt") : file("prep-centos7.txt")}"
@@ -68,7 +68,7 @@ resource "aws_ebs_volume" "awsvol" {
   depends_on        = ["aws_instance.awsweb"]
 
   tags {
-    "Name" = "${var.tag_prefix}-${count.index}"
+    Name = "${var.tag_prefix}-${count.index}"
   }
 }
 
