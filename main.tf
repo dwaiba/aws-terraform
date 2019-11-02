@@ -47,7 +47,7 @@ resource "aws_instance" "awsweb" {
                                           **/
   count = "${var.count_vms}"
 
-  ami = "${var.distro == "rhel75" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
+  ami = "${var.distro == "rhel77" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)}"
 
   instance_type = "t2.xlarge"
 
@@ -58,7 +58,7 @@ resource "aws_instance" "awsweb" {
     Name = "${var.tag_prefix}-${count.index}"
   }
 
-  user_data = "${var.distro == "rhel75" ? file("prep-rhel75.txt") : file("prep-centos7.txt")}"
+  user_data = "${var.distro == "rhel77" ? file("prep-rhel77.txt") : file("prep-centos7.txt")}"
 }
 
 resource "aws_ebs_volume" "awsvol" {
@@ -82,7 +82,7 @@ resource "null_resource" "provision" {
 
   provisioner "remote-exec" {
     connection {
-      user        = "${var.distro == "rhel75" ? var.rheluser : var.centosuser}"
+      user        = "${var.distro == "rhel77" ? var.rheluser : var.centosuser}"
       private_key = "${file(var.private_key_path)}"
       host        = "${element(aws_instance.awsweb.*.public_dns, count.index)}"
       agent       = false
@@ -118,5 +118,5 @@ output "address" {
 }
 
 output "connect_as" {
-  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel75" ? var.rheluser : var.centosuser}@<<public_dns>>"
+  value = "ssh -i ${var.private_key_path} ${var.distro == "rhel77" ? var.rheluser : var.centosuser}@<<public_dns>>"
 }

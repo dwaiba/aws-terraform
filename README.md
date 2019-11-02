@@ -73,7 +73,7 @@ https://github.com/dwaiba/aws-terraform
 
 :beginner: Destroy:
 
-`terraform destroy -var aws_access_key=<<your AWS_ACCESS_KEY_ID>> -var aws_secret_key=<<Your AWS_SECRET_ACCESS_KEY>>  -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel75 or centos7>>  -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel77`
+`terraform destroy -var aws_access_key=<<your AWS_ACCESS_KEY_ID>> -var aws_secret_key=<<Your AWS_SECRET_ACCESS_KEY>>  -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel77 or centos7>>  -var key_name=testingdwai -var private_key_path=/data/testingdwai.pem -var region=eu-central-1 -var tag_prefix=toolsrhel77`
 
 ### Via Ansible terraform module
 > Ansible now has a [terraform module](https://docs.ansible.com/ansible/2.7/modules/terraform_module.html) and a playbook yml file is included in this repository with a sample inventory with `localhost`

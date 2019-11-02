@@ -26,7 +26,7 @@ variable "region" {
   description = "Regions may be ap-northeast-1, ap-northeast-2, ap-south-1, ap-southeast-1, ap-southeast-2, ca-central-1, eu-central-1, eu-west-1, eu-west-2, eu-west-3, sa-east-1, us-east-1,us-east-2, us-west-1, us-west-2"
 }
 variable "distro" {
-  description = "Please input: rhel75 or centos7"
+  description = "Please input: rhel77 or centos7"
 }
 variable "disk_sizegb" {
   description = "Please input the disk size in GB to be attached to each VM. This would be automatically available as fs ext4 mounted on /data with docker CE volumes linked to /data/docker. "
