@@ -53,11 +53,9 @@ resource "aws_instance" "awsweb" {
 
   associate_public_ip_address = "true"
   key_name                    = "${var.key_name}"
-
-  tags {
-    Name = "${var.tag_prefix}-${count.index}"
-  }
-
+  /*
+  tags = ["${var.tag_prefix}-${count.index}"]
+*/
   user_data = "${var.distro == "rhel77" ? file("prep-rhel77.txt") : file("prep-centos7.txt")}"
 }
 
@@ -66,16 +64,15 @@ resource "aws_ebs_volume" "awsvol" {
   availability_zone = "${element(aws_instance.awsweb.*.availability_zone, count.index)}"
   size              = "${var.disk_sizegb}"
   depends_on        = ["aws_instance.awsweb"]
-
-  tags {
-    Name = "${var.tag_prefix}-${count.index}"
-  }
+  /*
+  tags = ["${var.tag_prefix}-${count.index}"]
+  */
 }
 
 resource "null_resource" "provision" {
   count = "${var.count_vms}"
 
-  triggers {
+  triggers = {
     current_ec2_instance_id = "${element(aws_instance.awsweb.*.id, count.index)}"
     instance_number         = "${count.index + 1}"
   }
