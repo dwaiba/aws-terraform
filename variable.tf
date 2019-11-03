@@ -36,7 +36,7 @@ variable "rheluser" {
 }
 
 variable "centosuser" {
-  default = "centos"
+  default = "ec2-user"
 }
 
 variable "centosamis" {

@@ -83,7 +83,7 @@ resource "null_resource" "provision" {
       private_key = "${file(var.private_key_path)}"
       host        = "${element(aws_instance.awsweb.*.public_dns, count.index)}"
       agent       = false
-      timeout     = "10s"
+      timeout     = "30s"
     }
 
     inline = [
