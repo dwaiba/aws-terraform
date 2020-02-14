@@ -6,6 +6,9 @@ Table of Contents (AWS RHEL77/centos77 with disks farm with Terraform in any reg
 3. [Terraform graph](#terraform-graph)
 4. **[Automatic provisioning](#high_brightness-automatic-provisioning)**
 5.  [Via Ansible terraform module](#via-ansible-terraform-module)
+
+   [Create a HA k8s Cluster as IAAS](#create-a-ha-k8s-cluster-as-iaas)
+   
 6. [Reporting bugs](#reporting-bugs)
 7. [Patches and pull requests](#patches-and-pull-requests)
 8. [License](#license)
@@ -87,6 +90,26 @@ https://github.com/dwaiba/aws-terraform
 4. Kick as `ansible-playbook -i inventory aws-terraform_playbook.yml`.
 
 5. To destroy set `state` variable in `aws-terraform_playbook.yml` to `absent`.
+
+### Create a HA k8s Cluster as IAAS
+
+One can create a Fully HA k8s Cluster using **[k3sup](https://k3sup.dev/)**
+
+<pre><code><b>curl -sLSf https://get.k3sup.dev | sh && sudo install -m k3sup /usr/local/bin/</b></code></pre>
+
+One can now use k3sup
+
+1. Obtain the Public IPs for the instances running as such `aws ec2 describe-instances` or obtain just the Public IPs as `aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --output=text`
+
+2. one can use to create a cluster with first ip as master <pre><code>k3sup install --cluster --ip <<<b>Any of the Public IPs</b>>> --user <<<b>ec2-user or centos as per distro</b>>> --ssh-key <<<b>the location of the aws private key like ~/aws-terraform/yourpemkey.pem</b>>></code></pre>
+
+3. one can also join another IP as master or node For master: <pre><code>k3sup join --server --ip <<<b>Any of the other Public IPs</b>>> --user <<<b>ec2-user or centos as per distro</b>>> --ssh-key <<<b>the location of the aws private key like ~/aws-terraform/yourpemkey.pem</b>>> --server-ip <<<b>The Server Public IP</b>>> </code></pre>
+
+or also as normal node:
+
+<pre><code>k3sup join --ip <<<b>Any of the other Public IPs</b>>> --user <<<b>ec2-user or centos as per distro</b>>> --ssh-key <<<b>the location of the aws private key like ~/aws-terraform/yourpemkey.pem</b>>> --server-ip <<<b>The Server Public IP</b>>> </code></pre>
+
+
 
 ### Reporting bugs
 
