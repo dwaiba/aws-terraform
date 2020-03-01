@@ -40,7 +40,7 @@ variable "centosuser" {
 }
 
 variable "centosamis" {
-  type = "map"
+  type = map
 
   default = {
     "ap-northeast-1" = "ami-02aa4ebefd694e352"
@@ -61,7 +61,7 @@ variable "centosamis" {
   }
 }
 variable "rhelamis" {
-  type = "map"
+  type = map
 
   default = {
     "eu-central-1"   = "ami-062dacb006c5860f9"
