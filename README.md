@@ -105,9 +105,19 @@ One can now use k3sup
 
 3. one can also join another IP as master or node For master: <pre><code>k3sup join --server --ip <<<b>Any of the other Public IPs</b>>> --user <<<b>ec2-user or centos as per distro</b>>> --ssh-key <<<b>the location of the aws private key like ~/aws-terraform/yourpemkey.pem</b>>> --server-ip <<<b>The Server Public IP</b>>> </code></pre>
 
-or also as normal node:
+<b>or as a simple script</b>:
 
-<pre><code>k3sup join --ip <<<b>Any of the other Public IPs</b>>> --user <<<b>ec2-user or centos as per distro</b>>> --ssh-key <<<b>the location of the aws private key like ~/aws-terraform/yourpemkey.pem</b>>> --server-ip <<<b>The Server Public IP</b>>> </code></pre>
+<pre><code>
+export SERVER_IP=$(terraform output -json instance_ips|jq -r '.[]'|head -n 1)
+
+k3sup install --cluster --ip $SERVER_IP --user ec2-user  --ssh-key <b>'Your Private SSH Key Location'</b>--k3s-extra-args '--no-deploy traefik --docker'
+
+terraform output -json instance_ips|jq -r '.[]'|tail -n+2|xargs -I {} k3sup join --server-ip $SERVER_IP --ip {}  --user ec2-user --ssh-key <b>'Your Private SSH Key Location'</b> --k3s-extra-args --docker
+
+export KUBECONFIG=`pwd`/kubeconfig
+kubectl get nodes -o wide -w
+
+</code></pre>
 
 
 
