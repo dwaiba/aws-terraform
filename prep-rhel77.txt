@@ -23,4 +23,4 @@ cat > /etc/docker/daemon.json <<EOF
 }
 EOF
 systemctl daemon-reload
-systemctl restart docker &&  wget https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz && tar -zxvf helm-v3.2.1-linux-amd64.tar.gz && cp linux-amd64/helm /usr/local/bin && rm -rf linux-amd64/ && rm -rf helm-v3.2.1-linux-amd64.tar.gz
+systemctl restart docker &&  wget https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz && tar -zxvf helm-v3.2.1-linux-amd64.tar.gz && cp linux-amd64/helm /usr/local/bin && rm -rf linux-amd64/ && rm -rf helm-v3.2.1-linux-amd64.tar.gz && hostnamectl set-hostname $(hostname).ec2.internal

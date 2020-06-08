@@ -92,7 +92,7 @@ https://github.com/dwaiba/aws-terraform
 
 ### Create a HA k8s Cluster as IAAS
 
-One can create a Fully HA k8s Cluster using **[k3sup](https://k3sup.dev/)**
+*One can create a Fully HA k8s Cluster using **[k3sup](https://k3sup.dev/)**
 
 <pre><code><b>curl -sLSf https://get.k3sup.dev | sh && sudo install -m k3sup /usr/local/bin/</b></code></pre>
 
@@ -116,6 +116,18 @@ terraform output -json instance_ips|jq -r '.[]'|tail -n+2|xargs -I {} k3sup join
 export KUBECONFIG=`pwd`/kubeconfig
 kubectl get nodes -o wide -w
 
+</code></pre>
+
+*One can create a Fully HA k8s Cluster using **[kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)**
+
+<pre><code><b>kubeadm init</b></code></pre>
+
+One can now use weavenet and join other workers
+<pre><code>
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 </code></pre>
 
 
