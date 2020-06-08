@@ -92,7 +92,7 @@ https://github.com/dwaiba/aws-terraform
 
 ### Create a HA k8s Cluster as IAAS
 
-*One can create a Fully HA k8s Cluster using **[k3sup](https://k3sup.dev/)**
+* One can create a Fully HA k8s Cluster using **[k3sup](https://k3sup.dev/)**
 
 <pre><code><b>curl -sLSf https://get.k3sup.dev | sh && sudo install -m k3sup /usr/local/bin/</b></code></pre>
 
@@ -118,7 +118,7 @@ kubectl get nodes -o wide -w
 
 </code></pre>
 
-*One can create a Fully HA k8s Cluster using **[kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)**
+* One can create a Fully HA k8s Cluster using **[kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)**
 
 <pre><code><b>kubeadm init</b></code></pre>
 
