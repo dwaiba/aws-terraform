@@ -1,6 +1,7 @@
 # Ignore Terraform state files
 /terraform.tfstate*
 /.terraform*
+/.idea*
 
 # Ignore Terraform state files
 /.terraform/

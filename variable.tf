@@ -14,6 +14,9 @@ variable "private_key_path" {
   description = "Local Path to the private key pem file - for ssh login. Example: ~/.ssh/terraform.pem for post provision remote-exec. Port 22 needs to be opened before provisioning for ingress"
 }
 
+variable "elbcertpath" {
+  description = "The absolute cert path for the cert generated from private key pem for the secure elb as 'openssl req -new -x509 -key privkey.pem -out certname.pem -days 3650'"
+}
 variable "tag_prefix" {
   description = "Prefix Tag to VMs for group identification"
 }
