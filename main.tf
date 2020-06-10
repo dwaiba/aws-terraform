@@ -1,4 +1,14 @@
-
+locals {
+  cluster_name                  = "test-eks-irsa"
+  k8s_service_account_namespace = "kube-system"
+  k8s_service_account_name      = "cluster-autoscaler-aws-cluster-autoscaler"
+  vpc_name                      = "k8s-vpc"
+  bucket_name                   = "my-s3-bucket-for-logs"
+  elb_certname                  = "elb-cert"
+  elb_name                      = "foobar-terraform-elb"
+  createbucket                  = true
+  createeks                     = false
+}
 resource "aws_default_security_group" "default" {
   vpc_id = module.vpc.vpc_id
 
@@ -35,10 +45,10 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 module "s3_bucket_for_logs" {
-  source = "terraform-aws-modules/s3-bucket/aws"
-
-  bucket = "my-s3-bucket-for-logs"
-  acl    = "log-delivery-write"
+  source        = "terraform-aws-modules/s3-bucket/aws"
+  create_bucket = local.createbucket
+  bucket        = local.bucket_name
+  acl           = "log-delivery-write"
 
   # Allow deletion of non-empty bucket
   force_destroy = true
@@ -51,7 +61,7 @@ module "s3_bucket_for_logs" {
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "k8s-vpc"
+  name = local.vpc_name
   cidr = "10.0.0.0/16"
 
   azs             = ["${var.region}a", "${var.region}b", "${var.region}c"]
@@ -59,13 +69,17 @@ module "vpc" {
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
   enable_nat_gateway     = true
-  single_nat_gateway     = false
-  one_nat_gateway_per_az = true
+  single_nat_gateway     = true
+  one_nat_gateway_per_az = false
   #enable_vpn_gateway   = true
   enable_dns_hostnames = true
   enable_dhcp_options  = true
   enable_dns_support   = true
   enable_ipv6          = true
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                      = "1"
+  }
   tags = {
     Terraform                          = "true"
     Environment                        = "dev"
@@ -97,7 +111,7 @@ resource "aws_ebs_volume" "awsvol" {
   }
 }
 resource "aws_iam_server_certificate" "elb_cert" {
-  name_prefix      = "elb-cert"
+  name_prefix      = local.elb_certname
   certificate_body = file(var.elbcertpath)
   private_key      = file(var.private_key_path)
 
@@ -132,17 +146,18 @@ resource "null_resource" "provision" {
   }
 
   depends_on = [aws_instance.awsweb, aws_ebs_volume.awsvol, aws_volume_attachment.ebs_att]
- }
+}
 
 resource "aws_elb" "bar" {
-  name = "foobar-terraform-elb"
+  name  = local.elb_name
+  count = 1
   #availability_zones = element(aws_instance.awsweb.*.availability_zone,count.index)
   subnets = aws_instance.awsweb.*.subnet_id
   #security_groups = aws_instance.awsweb[count.index].security_groups.id
 
 
   access_logs {
-    bucket   = "my-s3-bucket-for-logs"
+    bucket   = local.bucket_name
     interval = 60
   }
 
@@ -178,6 +193,54 @@ resource "aws_elb" "bar" {
     Name = "foobar-terraform-elb"
   }
   depends_on = [aws_instance.awsweb, aws_iam_server_certificate.elb_cert]
+}
+
+data "aws_eks_cluster" "cluster" {
+  name = module.eks-cluster.cluster_id
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks-cluster.cluster_id
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+  load_config_file       = false
+  version                = "~> 1.9"
+}
+
+module "eks-cluster" {
+  source          = "terraform-aws-modules/eks/aws"
+  create_eks      = local.createeks
+  cluster_name    = local.cluster_name
+  cluster_version = "1.16"
+  subnets         = module.vpc.public_subnets
+  vpc_id          = module.vpc.vpc_id
+
+  enable_irsa = true
+
+  worker_groups = [
+    {
+      name                 = "worker-group-1"
+      instance_type        = "t2.medium"
+      asg_desired_capacity = 1
+      asg_max_size         = 5
+      tags = [
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/enabled"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
+        },
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/${local.cluster_name}"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
+        }
+      ]
+    }
+  ]
 }
 output "ami" {
   value = aws_instance.awsweb.*.id
