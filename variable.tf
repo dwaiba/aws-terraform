@@ -42,6 +42,54 @@ variable "centosuser" {
   default = "ec2-user"
 }
 
+variable "bucket_name" {
+  default = "s3-bucket-for-elb-logs"
+}
+variable "elb_certname" {
+  default = "elb-cert"
+}
+variable "elb_name" {
+  default = "terraform-elb"
+}
+variable "eks_params" {
+  type = map
+
+  default = {
+    "createeks"                     = "false"
+    "k8s_service_account_name"      = "cluster-autoscaler-aws-cluster-autoscaler"
+    "k8s_service_account_namespace" = "kube-system"
+    "cluster_name"                  = "test-eks"
+    "enable_irsa"                   = false
+    "cluster_version"               = "1.16"
+  }
+}
+
+variable "vpc_params" {
+
+  type = map
+  default = {
+    "vpc_cidr"               = "10.0.0.0/16"
+    "vpc_name"               = "k8s-vpc"
+    "enable_nat_gateway"     = true
+    "single_nat_gateway"     = false
+    "one_nat_gateway_per_az" = true
+    "enable_vpn_gateway"     = false
+    "enable_dns_hostnames"   = true
+    "enable_dhcp_options"    = true
+    "enable_dns_support"     = true
+    "enable_ipv6"            = false
+    "environment_tag"        = "dev"
+  }
+}
+
+variable "vpc_subnets" {
+  type = map
+  default = {
+    "vpc_private_subnets" = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+    "vpc_public_subnets"  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  }
+}
+
 variable "centosamis" {
   type = map
 
