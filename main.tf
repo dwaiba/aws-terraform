@@ -3,7 +3,9 @@ provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
   region     = var.region
+  version    = "2.66.0"
 }
+
 resource "aws_default_security_group" "default" {
   count  = lookup(var.eks_params, "createeks") == "false" && var.count_vms == "0" ? 0 : 1
   vpc_id = module.vpc.vpc_id
@@ -203,12 +205,13 @@ provider "kubernetes" {
 }
 
 module "eks-cluster" {
-  source          = "terraform-aws-modules/eks/aws"
-  create_eks      = "${lookup(var.eks_params, "createeks")}"
-  cluster_name    = "${lookup(var.eks_params, "cluster_name")}"
-  cluster_version = "${lookup(var.eks_params, "cluster_version")}"
-  subnets         = module.vpc.public_subnets
-  vpc_id          = module.vpc.vpc_id
+  source                    = "terraform-aws-modules/eks/aws"
+  create_eks                = "${lookup(var.eks_params, "createeks")}"
+  cluster_name              = "${lookup(var.eks_params, "cluster_name")}"
+  cluster_version           = "${lookup(var.eks_params, "cluster_version")}"
+  subnets                   = module.vpc.public_subnets
+  vpc_id                    = module.vpc.vpc_id
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   enable_irsa = "${lookup(var.eks_params, "enable_irsa")}"
 
