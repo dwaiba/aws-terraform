@@ -29,20 +29,20 @@ resource "aws_default_security_group" "default" {
 module "vpc" {
   source     = "terraform-aws-modules/vpc/aws"
   create_vpc = lookup(var.eks_params, "createeks") == "false" && var.count_vms == "0" ? false : true
-  name       = "${lookup(var.vpc_params, "vpc_name")}"
-  cidr       = "${lookup(var.vpc_params, "vpc_cidr")}"
+  name       = lookup(var.vpc_params, "vpc_name")
+  cidr       = lookup(var.vpc_params, "vpc_cidr")
 
   azs                    = ["${var.region}a", "${var.region}b", "${var.region}c"]
-  private_subnets        = "${lookup(var.vpc_subnets, "vpc_private_subnets")}"
-  public_subnets         = "${lookup(var.vpc_subnets, "vpc_public_subnets")}"
-  enable_nat_gateway     = "${lookup(var.vpc_params, "enable_nat_gateway")}"
-  single_nat_gateway     = "${lookup(var.vpc_params, "single_nat_gateway")}"
-  one_nat_gateway_per_az = "${lookup(var.vpc_params, "one_nat_gateway_per_az")}"
-  enable_vpn_gateway     = "${lookup(var.vpc_params, "enable_vpn_gateway")}"
-  enable_dns_hostnames   = "${lookup(var.vpc_params, "enable_dns_hostnames")}"
-  enable_dhcp_options    = "${lookup(var.vpc_params, "enable_dhcp_options")}"
-  enable_dns_support     = "${lookup(var.vpc_params, "enable_dns_support")}"
-  enable_ipv6            = "${lookup(var.vpc_params, "enable_ipv6")}"
+  private_subnets        = lookup(var.vpc_subnets, "vpc_private_subnets")
+  public_subnets         = lookup(var.vpc_subnets, "vpc_public_subnets")
+  enable_nat_gateway     = lookup(var.vpc_params, "enable_nat_gateway")
+  single_nat_gateway     = lookup(var.vpc_params, "single_nat_gateway")
+  one_nat_gateway_per_az = lookup(var.vpc_params, "one_nat_gateway_per_az")
+  enable_vpn_gateway     = lookup(var.vpc_params, "enable_vpn_gateway")
+  enable_dns_hostnames   = lookup(var.vpc_params, "enable_dns_hostnames")
+  enable_dhcp_options    = lookup(var.vpc_params, "enable_dhcp_options")
+  enable_dns_support     = lookup(var.vpc_params, "enable_dns_support")
+  enable_ipv6            = lookup(var.vpc_params, "enable_ipv6")
   public_subnet_tags = {
     "kubernetes.io/cluster/${lookup(var.eks_params, "cluster_name")}" = "shared"
     "kubernetes.io/role/elb"                                          = "1"
@@ -80,7 +80,7 @@ resource "aws_ebs_volume" "awsvol" {
 }
 resource "aws_iam_server_certificate" "elb_cert" {
   count            = var.count_vms == "0" ? 0 : 1
-  name_prefix      = var.elb_certname
+  name_prefix      = lookup(var.s3_elb_params, "elb_certname")
   certificate_body = file(var.elbcertpath)
   private_key      = file(var.private_key_path)
 
@@ -126,7 +126,7 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "aws_elb" "bar" {
-  name  = var.elb_name
+  name  = lookup(var.s3_elb_params, "elb_name")
   count = var.count_vms == "0" ? 0 : 1
   #availability_zones = element(aws_instance.awsweb.*.availability_zone,count.index)
   subnets = aws_instance.awsweb.*.subnet_id
@@ -134,7 +134,7 @@ resource "aws_elb" "bar" {
 
 
   access_logs {
-    bucket   = var.bucket_name
+    bucket   = lookup(var.s3_elb_params, "bucket_name")
     interval = 60
   }
 
@@ -167,14 +167,14 @@ resource "aws_elb" "bar" {
   connection_draining_timeout = 400
 
   tags = {
-    Name = var.elb_name
+    Name = lookup(var.s3_elb_params, "elb_name")
   }
   depends_on = [aws_instance.awsweb, aws_iam_server_certificate.elb_cert]
 }
 module "s3_bucket_for_logs" {
   source        = "terraform-aws-modules/s3-bucket/aws"
   create_bucket = var.count_vms == "0" ? false : true
-  bucket        = var.bucket_name
+  bucket        = lookup(var.s3_elb_params, "bucket_name")
   acl           = "log-delivery-write"
 
   # Allow deletion of non-empty bucket
@@ -188,12 +188,12 @@ module "s3_bucket_for_logs" {
 
 data "aws_eks_cluster" "cluster" {
   name  = module.eks-cluster.cluster_id
-  count = "${lookup(var.eks_params, "createeks") == "false" ? 0 : 1}"
+  count = lookup(var.eks_params, "createeks") == "false" ? 0 : 1
 }
 
 data "aws_eks_cluster_auth" "cluster" {
   name  = module.eks-cluster.cluster_id
-  count = "${lookup(var.eks_params, "createeks") == "false" ? 0 : 1}"
+  count = lookup(var.eks_params, "createeks") == "false" ? 0 : 1
 }
 
 provider "kubernetes" {
@@ -206,14 +206,14 @@ provider "kubernetes" {
 
 module "eks-cluster" {
   source                    = "terraform-aws-modules/eks/aws"
-  create_eks                = "${lookup(var.eks_params, "createeks")}"
-  cluster_name              = "${lookup(var.eks_params, "cluster_name")}"
-  cluster_version           = "${lookup(var.eks_params, "cluster_version")}"
+  create_eks                = lookup(var.eks_params, "createeks")
+  cluster_name              = lookup(var.eks_params, "cluster_name")
+  cluster_version           = lookup(var.eks_params, "cluster_version")
   subnets                   = module.vpc.public_subnets
   vpc_id                    = module.vpc.vpc_id
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
-  enable_irsa = "${lookup(var.eks_params, "enable_irsa")}"
+  enable_irsa = lookup(var.eks_params, "enable_irsa")
 
   worker_groups = [
     {

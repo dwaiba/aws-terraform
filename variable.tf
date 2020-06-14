@@ -1,8 +1,8 @@
 variable "aws_access_key" {
-  description = "The AWS_ACCESS_KEY_ID as obtained from You can generate new ones from your EC2 console via the url for your <<account_user>> - https://console.aws.amazon.com/iam/home?region=<<region>>#/users/<<account_user>>?section=security_credentials"
+  description = "The AWS_ACCESS_KEY_ID as obtained. You can generate new ones from your EC2 console via the url for your <<account_user>> - https://console.aws.amazon.com/iam/home?region=<<region>>#/users/<<account_user>>?section=security_credentials"
 }
 variable "aws_secret_key" {
-  description = "The AWS_SECRET_ACCESS_KEY as obtained from You can generate new ones from your EC2 console via the url for your <<account_user>> - https://console.aws.amazon.com/iam/home?region=<<region>>#/users/<<account_user>>?section=security_credentials"
+  description = "The AWS_SECRET_ACCESS_KEY as obtained. You can generate new ones from your EC2 console via the url for your <<account_user>> - https://console.aws.amazon.com/iam/home?region=<<region>>#/users/<<account_user>>?section=security_credentials"
 }
 
 
@@ -42,15 +42,16 @@ variable "centosuser" {
   default = "ec2-user"
 }
 
-variable "bucket_name" {
-  default = "s3-bucket-for-elb-logs"
+variable "s3_elb_params" {
+  type = map
+
+  default = {
+    "bucket_name"  = "s3-bucket-for-elb-logs"
+    "elb_certname" = "elb-cert"
+    "elb_name"     = "terraform-elb"
+  }
 }
-variable "elb_certname" {
-  default = "elb-cert"
-}
-variable "elb_name" {
-  default = "terraform-elb"
-}
+
 variable "eks_params" {
   type = map
 
