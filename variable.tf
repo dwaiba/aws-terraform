@@ -56,11 +56,11 @@ variable "eks_params" {
   type = map
 
   default = {
-    "createeks"                     = "false"
+    "createeks"                     = "true"
     "k8s_service_account_name"      = "cluster-autoscaler-aws-cluster-autoscaler"
     "k8s_service_account_namespace" = "kube-system"
     "cluster_name"                  = "test-eks"
-    "enable_irsa"                   = false
+    "enable_irsa"                   = true
     "cluster_version"               = "1.16"
   }
 }

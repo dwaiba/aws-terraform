@@ -9,4 +9,4 @@
 /*.plan
 /*.retry
 /*.pem
-kubeconfig
+kubeconfig*
