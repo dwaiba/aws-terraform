@@ -9,7 +9,27 @@ provider "aws" {
 resource "aws_default_security_group" "default" {
   count  = lookup(var.eks_params, "createeks") == "false" && var.count_vms == "0" ? 0 : 1
   vpc_id = module.vpc.vpc_id
+  /**
   ingress {
+    protocol = -1
+
+    self        = true
+    cidr_blocks = formatlist("%s/32", aws_instance.awsweb.*.public_ip)
+
+    from_port = 0
+    to_port   = 0
+  }
+  ingress {
+    protocol = -1
+
+    self        = true
+    cidr_blocks = [lookup(var.vpc_params, "vpc_cidr")]
+
+    from_port = 0
+    to_port   = 0
+  }
+  **/
+    ingress {
     protocol = -1
 
     self        = true
@@ -18,7 +38,6 @@ resource "aws_default_security_group" "default" {
     from_port = 0
     to_port   = 0
   }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -115,7 +134,7 @@ resource "null_resource" "provision" {
     create_before_destroy = true
   }
 
-  depends_on = [aws_instance.awsweb, aws_ebs_volume.awsvol, aws_volume_attachment.ebs_att]
+  depends_on = [aws_instance.awsweb, aws_ebs_volume.awsvol, aws_volume_attachment.ebs_att, aws_default_security_group.default]
 }
 resource "aws_volume_attachment" "ebs_att" {
   count        = var.count_vms
@@ -209,7 +228,7 @@ module "eks-cluster" {
   create_eks                = lookup(var.eks_params, "createeks")
   cluster_name              = lookup(var.eks_params, "cluster_name")
   cluster_version           = lookup(var.eks_params, "cluster_version")
-  subnets                   = module.vpc.public_subnets
+  subnets                   = module.vpc.private_subnets
   vpc_id                    = module.vpc.vpc_id
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
@@ -260,7 +279,7 @@ module "eks-cluster" {
       instance_type        = "t2.small"
       asg_desired_capacity = 2
       asg_max_size         = 5
-      public_ip            = true
+      public_ip            = false
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/enabled"
@@ -277,9 +296,28 @@ module "eks-cluster" {
     {
       name                 = "worker-group-2"
       instance_type        = "t2.medium"
-      asg_desired_capacity = 1
+      asg_desired_capacity = 2
       asg_max_size         = 5
-      public_ip            = true
+      public_ip            = false
+      tags = [
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/enabled"
+          "propagate_at_launch" = "true"
+          "value"               = "true"
+        },
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/${lookup(var.eks_params, "cluster_name")}"
+          "propagate_at_launch" = "true"
+          "value"               = "true"
+        }
+      ]
+    },
+    {
+      name                 = "worker-group-3"
+      instance_type        = "t2.micro"
+      asg_desired_capacity = 2
+      asg_max_size         = 5
+      public_ip            = false
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/enabled"
