@@ -3,7 +3,7 @@ provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
   region     = var.region
-  version    = "2.66.0"
+  #version    = "2.66.0"
 }
 
 resource "aws_default_security_group" "default" {
@@ -66,6 +66,11 @@ module "vpc" {
     "kubernetes.io/cluster/${lookup(var.eks_params, "cluster_name")}" = "shared"
     "kubernetes.io/role/elb"                                          = "1"
   }
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${lookup(var.eks_params, "cluster_name")}" = "shared"
+    "kubernetes.io/role/internal-elb"                                 = "1"
+  }
+
   tags = {
     Terraform                          = "true"
     Environment                        = lookup(var.vpc_params, "environment_tag")
@@ -220,7 +225,7 @@ provider "kubernetes" {
   cluster_ca_certificate = length(data.aws_eks_cluster.cluster) == 0 ? "" : base64decode(element(data.aws_eks_cluster.cluster.*.certificate_authority.0.data, length(data.aws_eks_cluster.cluster)))
   token                  = length(data.aws_eks_cluster.cluster) == 0 ? "" : element(data.aws_eks_cluster_auth.cluster.*.token, length(data.aws_eks_cluster_auth.cluster))
   load_config_file       = false
-  version                = "~> 1.11"
+  #version                = "~> 1.11"
 }
 
 module "eks-cluster" {
@@ -357,10 +362,10 @@ resource "helm_release" "prometheus-operator" {
   }
 }
 **/
-/**
+
 module "iam_assumable_role_with_oidc" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "~> 2.0"
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  #version = "~> 2.0"
 
   create_role = true
 
@@ -370,17 +375,21 @@ module "iam_assumable_role_with_oidc" {
     Role = "role-with-oidc"
   }
 
-  provider_url = module.eks-cluster.cluster_oidc_issuer_url
+  #provider_url = module.eks-cluster.cluster_oidc_issuer_url
+  provider_url = replace(module.eks-cluster.cluster_oidc_issuer_url, "https://", "")
 
   role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    aws_iam_policy.cluster_autoscaler.arn,
   ]
 }
-**/
+
 module "iam_assumable_role_admin" {
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "~> v2.6.0"
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  #version                       = "~> v2.6.0"
   create_role                   = true
   role_name                     = "cluster-autoscaler"
   provider_url                  = replace(module.eks-cluster.cluster_oidc_issuer_url, "https://", "")
@@ -404,7 +413,10 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
       "autoscaling:DescribeAutoScalingInstances",
       "autoscaling:DescribeLaunchConfigurations",
       "autoscaling:DescribeTags",
+      "autoscaling:SetDesiredCapacity",
+      "autoscaling:TerminateInstanceInAutoScalingGroup",
       "ec2:DescribeLaunchTemplateVersions",
+      "autoscaling:UpdateAutoScalingGroup",
     ]
 
     resources = ["*"]
@@ -415,8 +427,13 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
     effect = "Allow"
 
     actions = [
+      "autoscaling:DescribeAutoScalingGroups",
+      "autoscaling:DescribeAutoScalingInstances",
+      "autoscaling:DescribeLaunchConfigurations",
+      "autoscaling:DescribeTags",
       "autoscaling:SetDesiredCapacity",
       "autoscaling:TerminateInstanceInAutoScalingGroup",
+      "ec2:DescribeLaunchTemplateVersions",
       "autoscaling:UpdateAutoScalingGroup",
     ]
 
