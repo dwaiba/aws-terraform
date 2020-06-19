@@ -1,12 +1,20 @@
 # Ignore Terraform state files
 /terraform.tfstate*
+/helm/terraform.tfstate*
+/helm/.terraform*
 /.terraform*
 /.idea*
 
 # Ignore Terraform state files
 /.terraform/
+/helm/.terraform/
 
 /*.plan
+/helm/*.plan
+/helm/*.retry
 /*.retry
 /*.pem
+/helm/*.pem
 kubeconfig*
+/helm/kubeconfig*
+
