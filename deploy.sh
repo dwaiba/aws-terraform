@@ -1,0 +1,1 @@
+ export KUBECONFIG=~/aws-terraform/kubeconfig_test-eks && cd helm && terraform init && git clone https://github.com/hashicorp/consul-helm && git clone https://github.com/elastic/helm-charts.git efktemp && terraform plan -out helm.plan
