@@ -284,6 +284,7 @@ module "eks-cluster" {
       instance_type        = "t2.small"
       asg_desired_capacity = 2
       asg_max_size         = 5
+      key_name             = var.key_name
       public_ip            = true
       tags = [
         {
@@ -303,6 +304,7 @@ module "eks-cluster" {
       instance_type        = "t2.medium"
       asg_desired_capacity = 2
       asg_max_size         = 5
+      key_name             = var.key_name
       public_ip            = true
       tags = [
         {
@@ -322,6 +324,7 @@ module "eks-cluster" {
       instance_type        = "t2.large"
       asg_desired_capacity = 2
       asg_max_size         = 5
+      key_name             = var.key_name
       public_ip            = true
       tags = [
         {
