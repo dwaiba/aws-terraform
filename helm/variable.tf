@@ -18,6 +18,27 @@ variable "monitoring" {
     "release"   = "prometheus-operator"
   }
 }
+/**
+variable "bookstack" {
+  type = map
+
+  default = {
+    "namespace"       = "bookstack"
+    "release"         = "bookstack"
+    "replicaCount"    = 3
+    "mariadb.enabled" = true
+    "mariadb.db.name" = "bookstack"
+    "mariadb.db.user" = "bookstack"
+    "mariadb.master.persistence.enabled"      = true
+    "mariadb.master.persistence.storageClass" = "gp2"
+    "mariadb.master.persistence.accessMode"   = "ReadWriteOnce"
+    "mariadb.master.persistence.size"         = "30Gi"
+    "service.type" = "ClusterIP"
+    "service.port" = "80"
+  }
+}
+  **/
+
 variable "logging" {
   type = map
 

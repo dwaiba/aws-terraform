@@ -135,3 +135,60 @@ resource "helm_release" "kibana" {
     command = "helm test ${lookup(var.logging, "kibana_release")} --namespace ${lookup(var.logging, "namespace")}"
   }
 }
+
+/**
+resource "helm_release" "bookstack" {
+  name             = lookup(var.bookstack, "release")
+  repository       = "https://kubernetes-charts.storage.googleapis.com"
+  chart            = lookup(var.bookstack, "release")
+  namespace        = lookup(var.bookstack, "namespace")
+  create_namespace = "true"
+
+  set {
+    name  = "replicaCount"
+    value = lookup(var.bookstack, "replicaCount")
+  }
+
+  set {
+    name  = "mariadb.enabled"
+    value = lookup(var.bookstack, "mariadb.enabled")
+  }
+  set {
+    name  = "mariadb.db.name"
+    value = lookup(var.bookstack, "mariadb.db.name")
+  }
+  set {
+    name  = "mariadb.db.user"
+    value = lookup(var.bookstack, "mariadb.db.user")
+  }
+
+      set {
+    name  = "mariadb.master.persistence.enabled"
+    value = lookup(var.bookstack, "mariadb.master.persistence.enabled")
+  }
+      set {
+    name  = "mariadb.master.persistence.storageClass"
+    value = lookup(var.bookstack, "mariadb.master.persistence.storageClass")
+  }
+      set {
+    name  = "mariadb.master.persistence.accessMode"
+    value = lookup(var.bookstack, "mariadb.master.persistence.accessMode")
+  }
+      set {
+    name  = "mariadb.master.persistence.size"
+    value = lookup(var.bookstack, "mariadb.master.persistence.size")
+  }
+  set {
+    name  = "service.type"
+    value = lookup(var.bookstack, "service.type")
+  }
+  set {
+    name  = "service.port"
+    value = lookup(var.bookstack, "service.port")
+  }
+  provisioner "local-exec" {
+    command = "helm test ${lookup(var.monitoring, "release")} --namespace ${lookup(var.monitoring, "namespace")}"
+  }
+
+}
+  **/

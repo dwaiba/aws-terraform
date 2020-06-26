@@ -77,7 +77,25 @@ module "vpc" {
     "kubernetes.io/cluster/kubernetes" = "owned"
   }
 }
+/**
+resource "aws_security_group" "all_worker_mgmt" {
+  name_prefix = "all_worker_management"
+  vpc_id      = module.vpc.vpc_id
 
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+      "0.0.0.0/0",
+    ]
+  }
+}
+**/
 resource "aws_instance" "awsweb" {
 
 
@@ -286,6 +304,7 @@ module "eks-cluster" {
       asg_max_size         = 5
       key_name             = var.key_name
       public_ip            = true
+      # additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/enabled"
@@ -306,6 +325,8 @@ module "eks-cluster" {
       asg_max_size         = 5
       key_name             = var.key_name
       public_ip            = true
+      # additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
+
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/enabled"
@@ -326,6 +347,7 @@ module "eks-cluster" {
       asg_max_size         = 5
       key_name             = var.key_name
       public_ip            = true
+      # additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/enabled"
@@ -340,6 +362,11 @@ module "eks-cluster" {
       ]
     },
   ]
+  #worker_additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
+  #map_roles                            = var.map_roles
+  #map_users                            = var.map_users
+  #map_accounts                         = var.map_accounts
+
 
 }
 /**
