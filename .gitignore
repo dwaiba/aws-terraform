@@ -17,4 +17,6 @@
 /helm/*.pem
 kubeconfig*
 /helm/kubeconfig*
+/helm/consul-helm/
+/helm/efktemp/
 
