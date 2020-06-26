@@ -136,59 +136,42 @@ resource "helm_release" "kibana" {
   }
 }
 
-/**
-resource "helm_release" "bookstack" {
-  name             = lookup(var.bookstack, "release")
-  repository       = "https://kubernetes-charts.storage.googleapis.com"
-  chart            = lookup(var.bookstack, "release")
-  namespace        = lookup(var.bookstack, "namespace")
+resource "helm_release" "openfaas" {
+  name             = lookup(var.openfaas, "release")
+  repository       = "https://openfaas.github.io/faas-netes/"
+  chart            = lookup(var.openfaas, "release")
+  namespace        = lookup(var.openfaas, "namespace")
   create_namespace = "true"
 
   set {
-    name  = "replicaCount"
-    value = lookup(var.bookstack, "replicaCount")
+    name  = "functionNamespace"
+    value = lookup(var.openfaas, "functionNamespace")
   }
 
   set {
-    name  = "mariadb.enabled"
-    value = lookup(var.bookstack, "mariadb.enabled")
+    name  = "serviceType"
+    value = lookup(var.openfaas, "serviceType")
   }
   set {
-    name  = "mariadb.db.name"
-    value = lookup(var.bookstack, "mariadb.db.name")
+    name  = "basic_auth"
+    value = lookup(var.openfaas, "basic_auth")
   }
   set {
-    name  = "mariadb.db.user"
-    value = lookup(var.bookstack, "mariadb.db.user")
+    name  = "operator.create"
+    value = lookup(var.openfaas, "operator.create")
   }
 
-      set {
-    name  = "mariadb.master.persistence.enabled"
-    value = lookup(var.bookstack, "mariadb.master.persistence.enabled")
-  }
-      set {
-    name  = "mariadb.master.persistence.storageClass"
-    value = lookup(var.bookstack, "mariadb.master.persistence.storageClass")
-  }
-      set {
-    name  = "mariadb.master.persistence.accessMode"
-    value = lookup(var.bookstack, "mariadb.master.persistence.accessMode")
-  }
-      set {
-    name  = "mariadb.master.persistence.size"
-    value = lookup(var.bookstack, "mariadb.master.persistence.size")
+  set {
+    name  = "gateway.replicas"
+    value = lookup(var.openfaas, "gateway.replicas")
   }
   set {
-    name  = "service.type"
-    value = lookup(var.bookstack, "service.type")
+    name  = "queueWorker.replicas"
+    value = lookup(var.openfaas, "queueWorker.replicas")
   }
-  set {
-    name  = "service.port"
-    value = lookup(var.bookstack, "service.port")
-  }
+  /**
   provisioner "local-exec" {
-    command = "helm test ${lookup(var.monitoring, "release")} --namespace ${lookup(var.monitoring, "namespace")}"
+    command = "helm test ${lookup(var.openfaas, "release")} --namespace ${lookup(var.openfaas, "namespace")}"
   }
-
+**/
 }
-  **/

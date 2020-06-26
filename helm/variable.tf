@@ -18,26 +18,21 @@ variable "monitoring" {
     "release"   = "prometheus-operator"
   }
 }
-/**
-variable "bookstack" {
+
+variable "openfaas" {
   type = map
 
   default = {
-    "namespace"       = "bookstack"
-    "release"         = "bookstack"
-    "replicaCount"    = 3
-    "mariadb.enabled" = true
-    "mariadb.db.name" = "bookstack"
-    "mariadb.db.user" = "bookstack"
-    "mariadb.master.persistence.enabled"      = true
-    "mariadb.master.persistence.storageClass" = "gp2"
-    "mariadb.master.persistence.accessMode"   = "ReadWriteOnce"
-    "mariadb.master.persistence.size"         = "30Gi"
-    "service.type" = "ClusterIP"
-    "service.port" = "80"
+    "namespace"            = "openfaas"
+    "release"              = "openfaas"
+    "functionNamespace"    = "openfaas-fn"
+    "gateway.replicas"     = 3
+    "queueWorker.replicas" = 3
+    "operator.create"      = true
+    "basic_auth"           = true
+    "serviceType"          = "LoadBalancer"
   }
 }
-  **/
 
 variable "logging" {
   type = map

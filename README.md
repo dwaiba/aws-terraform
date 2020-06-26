@@ -1,20 +1,31 @@
-Table of Contents (AWS RHEL77/centos77 with disks farm with Terraform in any region)
+Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform in any region)
 =================
 
-1. [AWS user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools](#aws-user-data-with-terraform-rhel-7.7-and-centOS-7.7-in-all-regions-with-disk-and-with-tools)
+1. [EKS TL;DR](eks-tl;dr)
+2. [EKS and/or AWS bastion user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools](#eks-and/or-aws-bastion-user-data-with-terraform-rhel-7.7-and-centOS-7.7-in-all-regions-with-disk-and-with-tools)
 2. [login](#login)
-3. [Terraform graph](#terraform-graph)
 4. **[Automatic provisioning](#high_brightness-automatic-provisioning)**
-5.  [Via Ansible terraform module](#via-ansible-terraform-module)
-
-   [Create a HA k8s Cluster as IAAS](#create-a-ha-k8s-cluster-as-iaas)
-   
+5. [Create a HA k8s Cluster as IAAS](#create-a-ha-k8s-cluster-as-iaas)
 6. [Reporting bugs](#reporting-bugs)
 7. [Patches and pull requests](#patches-and-pull-requests)
 8. [License](#license)
 9. [Code of conduct](#code-of-conduct)
 
-### AWS user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools
+### EKS TL;DR
+:beginner: Plan:
+
+`terraform init && terraform plan -var aws_access_key=AKIAJBXBOC5JMB5VGGVQ -var aws_secret_key=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 -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes -out "run.plan"`
+
+:beginner: Apply:
+
+`terraform apply "run.plan"`
+
+:beginner: Destroy:
+
+`terraform destroy -var aws_access_key=<<ACCESS KEY>> -var aws_secret_key=<<SECRET KEY>> -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes --auto-approve`
+
+
+### EKS and/or AWS bastion user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools
 
 1. [Download and Install Terraform](https://www.terraform.io/downloads.html)
 2. [Create new pair via EC2 console for your account and region (us-east-2 default)](https://us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#KeyPairs:sort=keyName) and use the corresponding `Key pair name` value in the console for `key_name` value in `variable.tf`when performing `terraform plan -out "run.plan"`. **Please keep you private pem file handy and note the path.** One can also create a seperate certificate from the private key as follows to be used with the elb secure port **`openssl req -new -x509 -key privkey.pem -out certname.pem -days 3650`**.
@@ -42,18 +53,6 @@ As per Output intructions for each  DNS output.
 `chmod 400 <<your private pem file>>.pem && ssh -i <<your private pem file>>.pem ec2-user/centos@<<public address>>`
 
 
-### Terraform Graph
-Please generate dot format (Graphviz) terraform configuration graphs for visual representation of the repo.
-
-`terraform graph | dot -Tsvg > graph.svg`
-
-Also, one can use [Blast Radius](https://github.com/28mm/blast-radius) on live initialized terraform project to view graph.
-Please shoot in dockerized format:
-
-`docker ps -a|grep blast-radius|awk '{print $1}'|xargs docker kill && rm -rf aws-terraform && git clone https://github.com/dwaiba/aws-terraform && cd aws-terraform && terraform init && docker run --cap-add=SYS_ADMIN -dit --rm -p 5002:5000 -v $(pwd):/workdir:ro 28mm/blast-radius && cd ../`
-
- A live example is [here](http://buildservers.westeurope.cloudapp.azure.com:5002/) for this project. 
-
 ### :high_brightness: Automatic Provisioning
 
 https://github.com/dwaiba/aws-terraform
@@ -67,7 +66,7 @@ https://github.com/dwaiba/aws-terraform
 
 :beginner: Plan:
 
-`terraform init && terraform plan -var aws_access_key=<<your AWS_ACCESS_KEY_ID>> -var aws_secret_key=<<Your AWS_SECRET_ACCESS_KEY>>  -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel77 or centos77>>  -var key_name=testdwai -var private_key_path=/data/testdwai.pem -var region=us-east-2 -var tag_prefix=toolsrhel77 -out "run.plan"`
+`terraform init && terraform plan -var aws_access_key=AKIAJBXBOC5JMB5VGGVQ -var aws_secret_key=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 -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes -out "run.plan"`
 
 :beginner: Apply:
 
@@ -75,20 +74,8 @@ https://github.com/dwaiba/aws-terraform
 
 :beginner: Destroy:
 
-`terraform destroy -var aws_access_key=<<your AWS_ACCESS_KEY_ID>> -var aws_secret_key=<<Your AWS_SECRET_ACCESS_KEY>>  -var count_vms=3 -var disk_sizegb=50 -var distro=<<rhel77 or centos7>>  -var key_name=testdwai -var elbcertpath=/data/testdwaicert.pem -var private_key_path=/data/testdwai.pem -var region=us-east-1 -var tag_prefix=toolsrhel77`
+`terraform destroy -var aws_access_key=<<ACCESS KEY>> -var aws_secret_key=<<SECRET KEY>> -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes --auto-approve`
 
-### Via Ansible terraform module
-> Ansible now has a [terraform module](https://docs.ansible.com/ansible/2.7/modules/terraform_module.html) and a playbook yml file is included in this repository with a sample inventory with `localhost`
-
-1. Clone this repository in the ansible box as `cd /data && git clone https://github.com/dwaiba/aws-terraform`.
-
-2. Collect your  `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY="<< >>"`
-
-3. **Change the variables as required in `aws-terraform_playbook.yml`.**
-
-4. Kick as `ansible-playbook -i inventory aws-terraform_playbook.yml`.
-
-5. To destroy set `state` variable in `aws-terraform_playbook.yml` to `absent`.
 
 ### Create a HA k8s Cluster as IAAS
 
