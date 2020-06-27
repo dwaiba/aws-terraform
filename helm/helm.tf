@@ -4,6 +4,7 @@ resource "helm_release" "consul" {
   chart            = "${path.module}/consul-helm"
   namespace        = lookup(var.consul, "namespace")
   create_namespace = "true"
+  timeout          = 600
 
   set {
     name  = "server.replicas"
@@ -59,6 +60,7 @@ resource "helm_release" "monitoring" {
   chart            = lookup(var.monitoring, "release")
   namespace        = lookup(var.monitoring, "namespace")
   create_namespace = "true"
+  timeout          = 600
 
   set {
     name  = "alertmanager.persistentVolume.storageClass"
@@ -80,6 +82,7 @@ resource "helm_release" "aws_alb_ingress_controller" {
   chart            = lookup(var.aws_alb_ingress_controller, "release")
   namespace        = lookup(var.aws_alb_ingress_controller, "namespace")
   create_namespace = "true"
+  timeout          = 600
 
   set {
     name  = "clusterName"
@@ -106,6 +109,7 @@ resource "helm_release" "elasticsearch" {
   chart            = "${path.module}/efktemp/elasticsearch"
   namespace        = lookup(var.logging, "namespace")
   create_namespace = "true"
+  timeout          = 600
   /**
   provisioner "local-exec" {
     command = "helm test ${lookup(var.logging, "elasticsearch_release")} --namespace ${lookup(var.logging, "namespace")}"
@@ -118,7 +122,7 @@ resource "helm_release" "filebeat" {
   chart            = "${path.module}/efktemp/filebeat"
   namespace        = lookup(var.logging, "namespace")
   create_namespace = "true"
-
+  timeout          = 600
   provisioner "local-exec" {
     command = "helm test ${lookup(var.logging, "filebeat_release")} --namespace ${lookup(var.logging, "namespace")}"
   }
@@ -130,18 +134,19 @@ resource "helm_release" "kibana" {
   chart            = "${path.module}/efktemp/kibana"
   namespace        = lookup(var.logging, "namespace")
   create_namespace = "true"
-
+  timeout          = 600
   provisioner "local-exec" {
     command = "helm test ${lookup(var.logging, "kibana_release")} --namespace ${lookup(var.logging, "namespace")}"
   }
 }
-
+/**
 resource "helm_release" "openfaas" {
   name             = lookup(var.openfaas, "release")
   repository       = "https://openfaas.github.io/faas-netes/"
   chart            = lookup(var.openfaas, "release")
   namespace        = lookup(var.openfaas, "namespace")
   create_namespace = "true"
+  timeout          = 600
 
   set {
     name  = "functionNamespace"
@@ -169,9 +174,9 @@ resource "helm_release" "openfaas" {
     name  = "queueWorker.replicas"
     value = lookup(var.openfaas, "queueWorker.replicas")
   }
-  /**
+
   provisioner "local-exec" {
     command = "helm test ${lookup(var.openfaas, "release")} --namespace ${lookup(var.openfaas, "namespace")}"
   }
-**/
 }
+**/

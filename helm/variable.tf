@@ -18,7 +18,7 @@ variable "monitoring" {
     "release"   = "prometheus-operator"
   }
 }
-
+/**
 variable "openfaas" {
   type = map
 
@@ -33,7 +33,7 @@ variable "openfaas" {
     "serviceType"          = "LoadBalancer"
   }
 }
-
+**/
 variable "logging" {
   type = map
 
