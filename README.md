@@ -2,6 +2,7 @@ Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform
 =================
 
 1. [EKS TL;DR](eks-tl;dr)
+   [Topology](topology)
 2. [EKS and/or AWS bastion user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools](#eks-and/or-aws-bastion-user-data-with-terraform-rhel-7.7-and-centOS-7.7-in-all-regions-with-disk-and-with-tools)
 2. [login](#login)
 4. **[Automatic provisioning](#high_brightness-automatic-provisioning)**
@@ -14,15 +15,23 @@ Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform
 ### EKS TL;DR
 :beginner: Plan:
 
-`terraform init && terraform plan -var aws_access_key=AKIAJBXBOC5JMB5VGGVQ -var aws_secret_key=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 -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes -out "run.plan"`
+`terraform init && terraform plan -var aws_access_key=<<ACCESS KEY>> -var aws_secret_key=<<SECRET KEY>> -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes -out "run.plan"`
 
 :beginner: Apply:
 
 `terraform apply "run.plan"`
 
+:beginner: stackDeploy:
+
+`export KUBECONFIG=~/aws-terraform/kubeconfig_test-eks && ./deploystack.sh && cd helm && terraform apply helm.plan`
+
 :beginner: Destroy:
 
 `terraform destroy -var aws_access_key=<<ACCESS KEY>> -var aws_secret_key=<<SECRET KEY>> -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes --auto-approve`
+
+#### Topology
+
+<img src="https://raw.githubusercontent.com/dwaiba/aws-terraform/master/top.png" />
 
 
 ### EKS and/or AWS bastion user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools
