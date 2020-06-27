@@ -1,7 +1,7 @@
 Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform in any region)
 =================
 
-1. [EKS TL;DR](#eks-tl;dr)
+1. [EKS TL;DR](#eks-tldr)
 
    [Topology](#topology)
 2. [EKS and/or AWS bastion user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools](#eks-andor-aws-bastion-user-data-with-terraform---rhel-77-and-centos-77-in-all-regions-with-disk-and-with-tools)
