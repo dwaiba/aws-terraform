@@ -22,11 +22,14 @@ Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform
 
 `terraform apply "run.plan"`
 
-:beginner: stackDeploy:
+:beginner: stackDeploy with aws ingress controller, EFK, prometheus-operator, consul-server/ui:
 
-`export KUBECONFIG=~/aws-terraform/kubeconfig_test-eks && ./deploystack.sh && cd helm && terraform apply helm.plan`
+`export KUBECONFIG=~/aws-terraform/kubeconfig_test-eks && ./deploystack.sh && cd helm && terraform init && terraform plan -out helm.plan && terraform apply helm.plan`
 
-:beginner: Destroy:
+:beginner: Destroy stack:
+`export KUBECONFIG=~/aws-terraform/kubeconfig_test-eks && terraform destroy --auto-approve`
+
+:beginner: Destroy cluster and other aws resources:
 
 `terraform destroy -var aws_access_key=<<ACCESS KEY>> -var aws_secret_key=<<SECRET KEY>> -var count_vms=0 -var disk_sizegb=30 -var distro=centos7 -var key_name=testdwai -var elbcertpath=~/Downloads/testdwaicert.pem -var private_key_path=~/Downloads/testdwai.pem -var region=us-east-1 -var tag_prefix=k8snodes --auto-approve`
 

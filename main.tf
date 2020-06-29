@@ -492,13 +492,14 @@ module "ecr" {
   use_fullname = false
   #  list_image   = ["redis", "nginx"]
 }
-
+/**
 module "sns_topic" {
   source  = "terraform-aws-modules/sns/aws"
   version = "~> 2.0"
 
   name = "falco-topic"
 }
+**/
 output "ami" {
   value = aws_instance.awsweb.*.id
 }

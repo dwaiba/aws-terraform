@@ -33,6 +33,28 @@ variable "openfaas" {
     "serviceType"          = "LoadBalancer"
   }
 }
+
+
+variable "falco" {
+  type = map
+
+  default = {
+    "namespace"                      = "falco"
+    "release"                        = "falco"
+    "integrations.snsOutput.topic"   = "falco-topic"
+    "integrations.snsOutput.enabled" = true
+  }
+}
+
+variable "kubeless" {
+  type = map
+
+  default = {
+    "namespace"  = "kubeless"
+    "release"    = "kubeless"
+    "ui.enabled" = true
+  }
+}
 **/
 variable "logging" {
   type = map
@@ -61,3 +83,14 @@ variable "consul" {
     "server_connect"                      = true
   }
 }
+/**
+variable "region" {
+  description = "Regions may be ap-northeast-1, ap-northeast-2, ap-south-1, ap-southeast-1, ap-southeast-2, ca-central-1, eu-central-1, eu-west-1, eu-west-2, eu-west-3, sa-east-1, us-east-1,us-east-2, us-west-1, us-west-2"
+}
+variable "aws_access_key" {
+  description = "The AWS_ACCESS_KEY_ID as obtained. You can generate new ones from your EC2 console via the url for your <<account_user>> - https://console.aws.amazon.com/iam/home?region=<<region>>#/users/<<account_user>>?section=security_credentials"
+}
+variable "aws_secret_key" {
+  description = "The AWS_SECRET_ACCESS_KEY as obtained. You can generate new ones from your EC2 console via the url for your <<account_user>> - https://console.aws.amazon.com/iam/home?region=<<region>>#/users/<<account_user>>?section=security_credentials"
+}
+**/

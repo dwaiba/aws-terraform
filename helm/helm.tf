@@ -179,4 +179,57 @@ resource "helm_release" "openfaas" {
     command = "helm test ${lookup(var.openfaas, "release")} --namespace ${lookup(var.openfaas, "namespace")}"
   }
 }
-**/
+
+
+resource "helm_release" "falco" {
+  name             = lookup(var.falco, "release")
+  repository       = "https://kubernetes-charts.storage.googleapis.com/"
+  chart            = lookup(var.falco, "release")
+  namespace        = lookup(var.falco, "namespace")
+  create_namespace = "true"
+  timeout          = 600
+
+  set {
+    name  = "integrations.snsOutput.enabled"
+    value = lookup(var.falco, "integrations.snsOutput.enabled")
+  }
+  set {
+    name  = "integrations.snsOutput.topic"
+    value = lookup(var.falco, "integrations.snsOutput.topic")
+  }
+  set {
+    name  = "integrations.snsOutput.aws_default_region"
+    value = var.region
+  }
+  set {
+    name  = "integrations.snsOutput.aws_access_key_id"
+    value = var.aws_access_key
+  }
+  set {
+    name  = "integrations.snsOutput.aws_secret_access_key"
+    value = var.aws_secret_key
+  }
+
+  provisioner "local-exec" {
+    command = "helm test ${lookup(var.falco, "release")} --namespace ${lookup(var.falco, "namespace")}"
+  }
+
+}
+
+resource "helm_release" "kubeless" {
+  name             = lookup(var.kubeless, "release")
+  repository       = "https://kubernetes-charts-incubator.storage.googleapis.com/"
+  chart            = lookup(var.kubeless, "release")
+  namespace        = lookup(var.kubeless, "namespace")
+  create_namespace = "true"
+  timeout          = 600
+  set {
+    name  = "ui.enabled"
+    value = lookup(var.kubeless, "ui.enabled")
+  }
+  provisioner "local-exec" {
+    command = "helm test ${lookup(var.kubeless, "release")} --namespace ${lookup(var.kubeless, "namespace")}"
+  }
+
+}
+  **/
