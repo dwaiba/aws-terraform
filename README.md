@@ -52,9 +52,9 @@ Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform
 > Post provisioning **Automatic** `curl http://169.254.169.254/latest/user-data|sudo sh` - via terraform `remote-exec` executes `prep-centos7.txt` `shell-script` file contents of this repo available as user-data, post provisioning. Various type besides `shell-script` including direct `cloud-init` commands may be passed as multipart as part of the user-data via terraform `remote-exec`.
 6. To destroy `terraform destroy`
 
-> AWS **RHEl 7.7** AMIs per regios as per `aws ec2 describe-images --owners 309956199498 --query 'Images[*].[CreationDate,Name,ImageId]' --filters "Name=name,Values=RHEL-7.7?*GA*" --region <<region-name>> --output table | sort -r` - Red Hat [Soln. #15356](https://access.redhat.com/solutions/15356)
+> AWS **RHEl 7.7** AMIs per regios as per `aws ec2 describe-images --owners 309956199498 --query 'Images[*].[CreationDate,Name,ImageId,OwnerId]' --filters "Name=name,Values=RHEL-7.7?*GA*" --region <<region-name>> --output table | sort -r` - Red Hat [Soln. #15356](https://access.redhat.com/solutions/15356)
 
-> AWS **CentOS 7.7** AMIs per regios as per `aws ec2 describe-images --query 'Images[*].[CreationDate,Name,ImageId]' --filters "Name=name,Values=CentOS*7.7*" --region <<region-name>> --output table| sort -r`
+> AWS **CentOS 7.7** AMIs per regios as per `aws ec2 describe-images --query 'Images[*].[CreationDate,Name,ImageId,OwnerId]' --filters "Name=name,Values=CentOS*7.7*x86_64*" --region <<region-name>> --output table| sort -r`
 
 
 > AWS **CentOS** AMIs per regions used in map is as per maintained [CentOS Wiki](https://wiki.centos.org/Cloud/AWS#head-78d1e3a4e6ba5c5a3847750d88266916ffe69648)

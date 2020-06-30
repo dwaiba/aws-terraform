@@ -298,12 +298,18 @@ module "eks-cluster" {
 **/
   worker_groups_launch_template = [
     {
-      name                 = "worker-group-1"
-      instance_type        = "t2.small"
-      asg_desired_capacity = 2
-      asg_max_size         = 5
-      key_name             = var.key_name
-      public_ip            = true
+      name = "worker-group-1"
+      #ami_id                 = var.distro == "rhel77" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)
+      #pre_userdata           = var.distro == "rhel77" ? file("prep-rhel77.txt") : file("prep-centos7.txt")
+      #pre_userdata           = file("pre_userdata.sh")
+      #additional_ebs_volumes = [{ block_device_name = "/dev/xvdh", volume_size = 50 }]
+      instance_type          = "t2.small"
+      asg_desired_capacity   = 2
+      asg_max_size           = 5
+      key_name               = var.key_name
+      public_ip              = true
+      #worker_ami_name_filter = var.distro == "rhel77" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)
+      #worker_ami_owner_id    = var.distro == "rhel77" ? lookup(var.ownerids, "rhel77") : lookup(var.ownerids, "centos7")
       # additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
       tags = [
         {
@@ -319,12 +325,18 @@ module "eks-cluster" {
       ]
     },
     {
-      name                 = "worker-group-2"
-      instance_type        = "t2.medium"
-      asg_desired_capacity = 2
-      asg_max_size         = 5
-      key_name             = var.key_name
-      public_ip            = true
+      name = "worker-group-2"
+      #ami_id                 = var.distro == "rhel77" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)
+      #pre_userdata           = var.distro == "rhel77" ? file("prep-rhel77.txt") : file("prep-centos7.txt")
+      #pre_userdata           = file("pre_userdata.sh")
+      #additional_ebs_volumes = [{ block_device_name = "/dev/xvdh", volume_size = 50 }]
+      instance_type          = "t2.medium"
+      asg_desired_capacity   = 2
+      asg_max_size           = 5
+      key_name               = var.key_name
+      public_ip              = true
+      #worker_ami_name_filter = var.distro == "rhel77" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)
+      #worker_ami_owner_id    = var.distro == "rhel77" ? lookup(var.ownerids, "rhel77") : lookup(var.ownerids, "centos7")
       # additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
 
       tags = [
@@ -341,12 +353,18 @@ module "eks-cluster" {
       ]
     },
     {
-      name                 = "worker-group-3"
-      instance_type        = "t2.large"
-      asg_desired_capacity = 2
-      asg_max_size         = 5
-      key_name             = var.key_name
-      public_ip            = true
+      name = "worker-group-3"
+      #ami_id                 = var.distro == "rhel77" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)
+      #pre_userdata           = var.distro == "rhel77" ? file("prep-rhel77.txt") : file("prep-centos7.txt")
+      #pre_userdata           = file("pre_userdata.sh")
+      #additional_ebs_volumes = [{ block_device_name = "/dev/xvdh", volume_size = 50 }]
+      instance_type          = "t2.large"
+      asg_desired_capacity   = 2
+      asg_max_size           = 5
+      key_name               = var.key_name
+      public_ip              = true
+      #worker_ami_name_filter = var.distro == "rhel77" ? lookup(var.rhelamis, var.region) : lookup(var.centosamis, var.region)
+      #worker_ami_owner_id    = var.distro == "rhel77" ? lookup(var.ownerids, "rhel77") : lookup(var.ownerids, "centos7")
       # additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
       tags = [
         {

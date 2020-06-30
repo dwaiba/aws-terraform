@@ -134,3 +134,12 @@ variable "rhelamis" {
     "us-west-2"      = "ami-04b7963c90686dd4c"
   }
 }
+
+variable "ownerids" {
+  type = map
+
+  default = {
+    "centos7" = "057448758665"
+    "rhel77"  = "309956199498"
+  }
+}
