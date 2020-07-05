@@ -1,1 +1,1 @@
- cd helm && git clone https://github.com/hashicorp/consul-helm && git clone https://github.com/elastic/helm-charts.git efktemp && cp values.yaml efktemp/filebeat/values.yaml
+ cd helm && git clone https://github.com/hashicorp/consul-helm && git clone https://github.com/elastic/helm-charts.git efktemp && cp values.yaml efktemp/filebeat/values.yaml && wget https://download.elastic.co/downloads/eck/1.1.2/all-in-one.yaml && grep -rl "namespace: elastic-system"|xargs sed -i 's/namespace: elastic-system/namespace: logging/g'

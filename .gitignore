@@ -19,4 +19,5 @@ kubeconfig*
 /helm/kubeconfig*
 /helm/consul-helm/
 /helm/efktemp/
+/helm/all-in-one.yaml
 
