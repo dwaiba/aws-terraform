@@ -1,12 +1,17 @@
 Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform in any region)
 =================
 
-1. [EKS TL;DR](#eks-tldr)
+1. **[EKS TL;DR](#eks-tldr)**
 
-   [Topology](#topology)
+   **[Topology](#topology)**
+
+   **[Modules and Providers](#modules-and-providers)**
+
+
+
 2. [EKS and/or AWS bastion user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools](#eks-andor-aws-bastion-user-data-with-terraform---rhel-77-and-centos-77-in-all-regions-with-disk-and-with-tools)
 2. [login](#login)
-4. **[Automatic provisioning](#high_brightness-automatic-provisioning)**
+4. [Automatic provisioning](#high_brightness-automatic-provisioning)
 5. [Create a HA k8s Cluster as IAAS](#create-a-ha-k8s-cluster-as-iaas)
 6. [Reporting bugs](#reporting-bugs)
 7. [Patches and pull requests](#patches-and-pull-requests)
@@ -36,6 +41,42 @@ Table of Contents (EKS and/or AWS RHEL77/centos77 with disks farm with Terraform
 #### Topology
 
 <img src="https://raw.githubusercontent.com/dwaiba/aws-terraform/master/top.png" />
+
+#### Modules and Providers
+
+*modules*
+
+cloudposse/ecr/aws 0.19.0 for ecr
+- ecr in .terraform/modules/ecr/terraform-aws-ecr-0.19.0
+git::github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0 for ecr.label
+- ecr.label in .terraform/modules/ecr.label
+terraform-aws-modules/eks/aws 12.1.0 for eks-cluster
+- eks-cluster in .terraform/modules/eks-cluster/terraform-aws-eks-12.1.0
+
+~~eks-cluster.node_groups in .terraform/modules/eks-cluster/terraform-aws-eks-12.1.0/modules/node_groups~~
+**Instance templates are being used from .terraform/modules/eks-cluster/terraform-aws-eks-12.1.0**
+
+- terraform-aws-modules/iam/aws 2.12.0 for iam_assumable_role_admin
+- iam_assumable_role_admin in .terraform/modules/iam_assumable_role_admin/terraform-aws-iam-2.12.0/modules/iam-assumable-role-with-oidc
+terraform-aws-modules/iam/aws 2.12.0 for iam_assumable_role_with_oidc
+- iam_assumable_role_with_oidc in .terraform/modules/iam_assumable_role_with_oidc/terraform-aws-iam-2.12.0/modules/iam-assumable-role-with-oidc
+terraform-aws-modules/s3-bucket/aws 1.9.0 for s3_bucket_for_logs
+- s3_bucket_for_logs in .terraform/modules/s3_bucket_for_logs/terraform-aws-s3-bucket-1.9.0
+terraform-aws-modules/vpc/aws 2.44.0 for vpc
+- vpc in .terraform/modules/vpc/terraform-aws-vpc-2.44.0
+
+
+*provider plugins*
+
+- plugin for provider "kubernetes" (hashicorp/kubernetes) 1.11.3
+- plugin for provider "null" (hashicorp/null) 2.1.2
+- plugin for provider "template" (hashicorp/template) 2.1.2
+- plugin for provider "local" (hashicorp/local) 1.4.0
+- plugin for provider "random" (hashicorp/random) 2.3.0
+- plugin for provider "aws" (hashicorp/aws) 2.70.0
+- plugin for provider "helm" (hashicorp/helm) 1.2.3
+
+
 
 
 ### EKS and/or AWS bastion user-data with Terraform - RHEL 7.7 and CentOS 7.7 in all regions with disk and with tools
